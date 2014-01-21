@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-	<h2>Top Rope</h2>
-	<table class="table-responsive">
+<h2>Top Rope</h2>
+<div class="table-responsive">
+	<table class="table">
 
 		<tr>
 			<th>Name</th>
@@ -10,8 +11,9 @@
 			<th>Rating</th>
 			<th>Date Set</th>
 			<th>Setter</th>
+			<th>Tape</th>
 		</tr>
-		{% for route in routes_toprope %}
+		{% for route in topropes %}
 		<tr>
 			
 			<td>{{ route.name }}</td>
@@ -19,32 +21,35 @@
 			<td>{{ '5.' + route.rating }}</td>
 			<td>{{ route.dateSet }}</td>
 			<td>{{ route.setter }}</td>
+			<td>{{ route.tape_div }}
 			
 		</tr>
 		{% else %}
-			{% endfor %}
+		{% endfor %}
 	</table>
-	<h2>Boulder
-	<table class="table-responsive">
+</div>
+<h2>Boulder</h2>
+<div class="table-responsive">
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Rope</th>
+		<th>Rating</th>
+		<th>Date Set</th>
+		<th>Setter</th>
+	</tr>
+	{% for route in boulders %}
+	<tr>
 
-		<tr>
-			<th>Name</th>
-			<th>Rope</th>
-			<th>Rating</th>
-			<th>Date Set</th>
-			<th>Setter</th>
-		</tr>
-		{% for route in routes_boulder %}
-		<tr>
-			
-			<td>{{ route.name }}</td>
-			<td>{{ route.rope }}</td>
-			<td>{{ '5.' + route.rating }}</td>
-			<td>{{ route.dateSet }}</td>
-			<td>{{ route.setter }}</td>
-			
-		</tr>
-		{% else %}
-			{% endfor %}
-	</table>
+		<td>{{ route.name }}</td>
+		<td>{{ route.rope }}</td>
+		<td>{{ route.rating }}</td>
+		<td>{{ route.dateSet }}</td>
+		<td>{{ route.setter }}</td>
+
+	</tr>
+	{% else %}
+	{% endfor %}
+</table>
+</div>
 {% endblock %}
