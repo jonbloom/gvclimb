@@ -30,6 +30,7 @@ def teardown_request(exception):
 def show_all_routes():
 	all_routes = g.db.execute('select * from routes AS r JOIN orderkeys AS k on k.rating = r.rating order by k.key')
 	default_colors = g.db.execute('select * from colors')
+	print default_colors
 	routes_toprope = []
 	routes_boulder = []
 	for row in all_routes:
@@ -43,14 +44,14 @@ def show_all_routes():
 			routes_boulder.append(dict(id=row[0], routeType=row[1], rating=row[2], rope=row[3], name=row[4], dateSet=row[5], setter=row[6],tape_div=gen_tape_div("white",row[7],row[8])))
 	return render_template('show_routes.html', topropes=routes_toprope, boulders=routes_boulder)
 def gen_tape_div(base_color,color_1,color_2):
-	tape_div = "<div class='color " + base_color +  "' style='background-color:" + base_color + "; width:auto; \height:20px;margin:0 auto; padding:10px'>"
+	tape_div = "<div class='color " + base_color +  "' style='background-color:" + base_color + "; width:auto;margin:0 auto; padding:10px'>"
       	if color_1 != 'none':
       		if color_2 == 'none':
       			tape_div =  tape_div + "<div class='color " + color_1 + " fulltape' style='background-color:" + color_1 + "; width:40%; height:20px; margin:0 auto;'></div>"
       		else:
       			tape_div = tape_div +  "<div class='color " + color_1 + " halftape' style='background-color:" + color_1 + "; width:40%; height:20px; margin:0 5%; float:left;'></div><div class='color " + color_2 + " halftape' style='background-color:" + color_2 + "; width:40%; height:20px; margin:0 5%; float:left;'></div>"
       	tape_div = tape_div + "</div>"
-      	return tape_div
+      	return str(tape_div)
 # class Route(object):
 # 	id = 0
 # 	route_type = ""
