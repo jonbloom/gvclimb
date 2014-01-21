@@ -20,6 +20,7 @@ def connect_db():
 @app.before_request
 def before_request():
 	g.db = connect_db()
+	g.db.row_factory = sqlite3.Row
 @app.teardown_request
 def teardown_request(exception):
 	db = getattr(g, 'db', None)
@@ -29,22 +30,22 @@ def teardown_request(exception):
 @app.route('/')
 def show_all_routes():
 	all_routes = g.db.execute('select * from routes AS r JOIN orderkeys AS k on k.rating = r.rating order by k.key')
-	default_colors = g.db.execute('select * from colors')
-	print default_colors
+	colors = g.db.execute('select * from colors')
+	default_colors = colors.fetchone()
 	routes_toprope = []
 	routes_boulder = []
 	for row in all_routes:
-		# if row[9] == "none":
-		# 	base = default_colors[row[2]]
-		# else:
-		# 	base = row[9]
-		if row[1] == "toprope":
-			routes_toprope.append(dict(id=row[0], routeType=row[1], rating=row[2], rope=row[3], name=row[4], dateSet=row[5], setter=row[6],tape_div=gen_tape_div("white",row[7],row[8])))
+		if row[9] == "none":
+			base = default_colors[str(row[2])]
 		else:
-			routes_boulder.append(dict(id=row[0], routeType=row[1], rating=row[2], rope=row[3], name=row[4], dateSet=row[5], setter=row[6],tape_div=gen_tape_div("white",row[7],row[8])))
-	return render_template('show_routes.html', topropes=routes_toprope, boulders=routes_boulder)
+			base = row[9]
+		if row[1] == "toprope":
+			routes_toprope.append(dict(id=row[0], routeType=row[1], rating=row[2], rope=row[3], name=row[4], dateSet=row[5], setter=row[6],tape_div=gen_tape_div(base,row[7],row[8])))
+		else:
+			routes_boulder.append(dict(id=row[0], routeType=row[1], rating=row[2], rope=row[3], name=row[4], dateSet=row[5], setter=row[6],tape_div=gen_tape_div(base,row[7],row[8])))
+	return render_template('show_routes.html', topropes=routes_toprope, boulders=routes_boulder, colors=default_colors)
 def gen_tape_div(base_color,color_1,color_2):
-	tape_div = "<div class='color " + base_color +  "' style='background-color:" + base_color + "; width:auto;margin:0 auto; padding:10px'>"
+	tape_div = "<div class='color " + base_color +  "' style='background-color:" + base_color + "; height:40px;width:auto;margin:0 auto; padding:10px'>"
       	if color_1 != 'none':
       		if color_2 == 'none':
       			tape_div =  tape_div + "<div class='color " + color_1 + " fulltape' style='background-color:" + color_1 + "; width:40%; height:20px; margin:0 auto;'></div>"

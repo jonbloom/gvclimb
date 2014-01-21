@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	{% block head %}
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
 	<title>{% block title %}{% endblock %} - GV Climb</title>
 	{% endblock %}
     <!--[if lt IE 9]>

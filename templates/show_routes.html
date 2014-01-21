@@ -11,7 +11,7 @@
 			<th>Rating</th>
 			<th>Date Set</th>
 			<th>Setter</th>
-			<th>Tape</th>
+			<th width="15%">Tape</th>
 		</tr>
 		{% for route in topropes %}
 		<tr>
@@ -21,7 +21,7 @@
 			<td>{{ '5.' + route.rating }}</td>
 			<td>{{ route.dateSet }}</td>
 			<td>{{ route.setter }}</td>
-			<td>{{ route.tape_div|safe }}
+			<td>{{ route.tape_div|safe }}</td>
 			
 		</tr>
 		{% else %}
@@ -37,6 +37,7 @@
 		<th>Rating</th>
 		<th>Date Set</th>
 		<th>Setter</th>
+		<th width="15%">Tape</th>
 	</tr>
 	{% for route in boulders %}
 	<tr>
@@ -46,6 +47,7 @@
 		<td>{{ route.rating }}</td>
 		<td>{{ route.dateSet }}</td>
 		<td>{{ route.setter }}</td>
+		<td>{{ route.tape_div|safe }}</td>
 
 	</tr>
 	{% else %}
