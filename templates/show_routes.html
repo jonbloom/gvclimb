@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+	<h2>Top Rope</h2>
+	<table class="table-responsive">
+
+		<tr>
+			<th>Name</th>
+			<th>Rope</th>
+			<th>Rating</th>
+			<th>Date Set</th>
+			<th>Setter</th>
+		</tr>
+		{% for route in routes_toprope %}
+		<tr>
+			
+			<td>{{ route.name }}</td>
+			<td>{{ route.rope }}</td>
+			<td>{{ '5.' + route.rating }}</td>
+			<td>{{ route.dateSet }}</td>
+			<td>{{ route.setter }}</td>
+			
+		</tr>
+		{% else %}
+			{% endfor %}
+	</table>
+	<h2>Boulder
+	<table class="table-responsive">
+
+		<tr>
+			<th>Name</th>
+			<th>Rope</th>
+			<th>Rating</th>
+			<th>Date Set</th>
+			<th>Setter</th>
+		</tr>
+		{% for route in routes_boulder %}
+		<tr>
+			
+			<td>{{ route.name }}</td>
+			<td>{{ route.rope }}</td>
+			<td>{{ '5.' + route.rating }}</td>
+			<td>{{ route.dateSet }}</td>
+			<td>{{ route.setter }}</td>
+			
+		</tr>
+		{% else %}
+			{% endfor %}
+	</table>
+{% endblock %}
