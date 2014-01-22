@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
+<a id="toprope"></a>
 <h2>Top Rope</h2>
 <div class="table-responsive">
 	<table class="table">
 
 		<tr>
-			<th>Name</th>
-			<th>Rope</th>
-			<th>Rating</th>
-			<th>Date Set</th>
-			<th>Setter</th>
+			<th width="35%">Name</th>
+			<th width="5%">Rope</th>
+			<th width="5%">Rating</th>
+			<th width="10%">Date Set</th>
+			<th width="30%">Setter</th>
 			<th width="15%">Tape</th>
 		</tr>
 		{% for route in topropes %}
@@ -28,30 +29,32 @@
 		{% endfor %}
 	</table>
 </div>
+<a id="boulder"></a>
 <h2>Boulder</h2>
 <div class="table-responsive">
-<table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Rope</th>
-		<th>Rating</th>
-		<th>Date Set</th>
-		<th>Setter</th>
-		<th width="15%">Tape</th>
-	</tr>
-	{% for route in boulders %}
-	<tr>
+	<table class="table">
 
-		<td>{{ route.name }}</td>
-		<td>{{ route.rope }}</td>
-		<td>{{ route.rating }}</td>
-		<td>{{ route.dateSet }}</td>
-		<td>{{ route.setter }}</td>
-		<td>{{ route.tape_div|safe }}</td>
-
-	</tr>
-	{% else %}
-	{% endfor %}
-</table>
+		<tr>
+			<th width="35%">Name</th>
+			<th width="5%">Rope</th>
+			<th width="5%">Rating</th>
+			<th width="10%">Date Set</th>
+			<th width="30%">Setter</th>
+			<th width="15%">Tape</th>
+		</tr>
+		{% for route in boulders %}
+		<tr>
+			
+			<td>{{ route.name }}</td>
+			<td>{{ route.rope }}</td>
+			<td>{{ route.rating }}</td>
+			<td>{{ route.dateSet }}</td>
+			<td>{{ route.setter }}</td>
+			<td>{{ route.tape_div|safe }}</td>
+			
+		</tr>
+		{% else %}
+		{% endfor %}
+	</table>
 </div>
 {% endblock %}

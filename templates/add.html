@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}Add Route{% endblock %}
+{% block body %}
+
+{% macro setter(name)-%}
+<option value="{{name}}">{{name}}</option>
+{%- endmacro %}
+{% macro color(css,real) -%}
+<option value="{{css}}">{{real}}</option>
+{% endmacro -%}
+
+
+<h2>Add A Route</h2>
+<form role="form" action="{{url_for('add_route')}}" method="POST" style="width: 40%;">
+	<div class="form-group">
+		<label for="route_type">Route Type</label>
+		<select name="route_type" class="form-control"onchange="ratings(this.value)">
+			<option selected="selected" disabled="disabled" >Select A Route Type</option>
+			<option value="toprope">Top Rope</option>
+			<option value="boulder">Boulder</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="rating">Rating</label>
+		<select name="rating" class="form-control" onchange="tapePreview()" id="rating">
+			<option selected="selected" disabled="disabled">Select A Route Type</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="name">Route Name</label>
+		<input name="name" type="text" class="form-control" id="name" placeholder="Enter the route name">
+	</div>
+	<div class="form-group">
+		<label for="date">Date Set</label>
+		<input name="date" type="date" class="form-control" id="date" placeholder="">
+	</div>
+	<div class="form-group">
+		<label for="setter">Route Setter</label>
+		<select name="setter" class="form-control" id="setter" multiple="multiple" size=3>
+			<option selected="selected" disabled="disabled">Select A Setter</option>
+			{% for s in setters %}
+			{{setter(s.name)}}
+			{% endfor %}
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="special_base">Special Base</label>
+		<select name="special_base" class="form-control" id="special_base" onchange="tapePreview()">
+			<option value="none" selected="selected">None</option>
+			<optgroup label="Colors">
+				{% for c in colors %}
+				{{color(c.css,c.real)}}
+				{% endfor %}
+			</optgroup>
+			<optgroup label="Special">
+				<option value="floral">Golden Wrench</option>
+				<option value="moustaches">Moustaches</option>
+				<option value="fire">Fire</option>
+				<option value="spiders">Spiders</option>
+				<option value="spiderman">Spiderman</option>
+				<option value="skulls">Skulls</option>
+				<option value="penguin">Penguins</option>
+				<option value="rainbow">ZigZag</option>
+				<option value="lips">Lips</option>
+				<option value="biebber">Justin Bieber</option>
+				<option value="pickles">Pickles</option>
+				<option value="darkstripes">Dark Stripes</option>
+				<option value="greensquiggles">Green Squiggles</option>
+			</optgroup>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="color_1">Secondary Color 1</label>
+		<select name="color_1" class="form-control" id="color_1" onchange="tapePreview()">
+			<option value="none" selected="selected">None</option>
+			<optgroup label="Colors">
+				{% for c in colors %}
+				{{color(c.css,c.real)}}
+				{% endfor %}
+			</optgroup>
+			<optgroup label="Special">
+				<option value="floral">Golden Wrench</option>
+				<option value="moustaches">Moustaches</option>
+				<option value="fire">Fire</option>
+				<option value="spiders">Spiders</option>
+				<option value="spiderman">Spiderman</option>
+				<option value="skulls">Skulls</option>
+				<option value="penguin">Penguins</option>
+				<option value="rainbow">ZigZag</option>
+				<option value="lips">Lips</option>
+				<option value="biebber">Justin Bieber</option>
+				<option value="pickles">Pickles</option>
+				<option value="darkstripes">Dark Stripes</option>
+				<option value="greensquiggles">Green Squiggles</option>
+			</optgroup>
+		</select>
+	</div>
+<div class="form-group">
+		<label for="color_2">Secondary Color 1</label>
+		<select name="color_2" class="form-control" id="color_2" onchange="tapePreview()">
+			<option value="none" selected="selected">None</option>
+			<optgroup label="Colors">
+				{% for c in colors %}
+				{{color(c.css,c.real)}}
+				{% endfor %}
+			</optgroup>
+			<optgroup label="Special">
+				<option value="floral">Golden Wrench</option>
+				<option value="moustaches">Moustaches</option>
+				<option value="fire">Fire</option>
+				<option value="spiders">Spiders</option>
+				<option value="spiderman">Spiderman</option>
+				<option value="skulls">Skulls</option>
+				<option value="penguin">Penguins</option>
+				<option value="rainbow">ZigZag</option>
+				<option value="lips">Lips</option>
+				<option value="biebber">Justin Bieber</option>
+				<option value="pickles">Pickles</option>
+				<option value="darkstripes">Dark Stripes</option>
+				<option value="greensquiggles">Green Squiggles</option>
+			</optgroup>
+		</select>
+	</div>
+	<button type="submit" class="btn btn-submit">Add Route</button>
+</form>
+{% endblock %}
+{% block scripts %}
+function ratings(type){
+	$('#rating option').remove();
+	if (type == 'toprope'){
+		$("#rating").append("<option value='' disabled='disabled' selected='selected'>Select a Rating</option>");
+		$("#rating").append("<option value='7'>5.7</option>");
+		$("#rating").append("<option value='8'>5.8</option>");
+		$("#rating").append("<option value='9'>5.9</option>");
+		$("#rating").append("<option value='10a'>5.10a</option>");
+		$("#rating").append("<option value='10b'>5.10b</option>");
+		$("#rating").append("<option value='10c'>5.10c</option>");
+		$("#rating").append("<option value='10d'>5.10d</option>");
+		$("#rating").append("<option value='11a'>5.11a</option>");
+		$("#rating").append("<option value='11b'>5.11b</option>");
+		$("#rating").append("<option value='11c'>5.11c</option>");
+		$("#rating").append("<option value='11d'>5.11d</option>");
+		$("#rating").append("<option value='12a'>5.12a</option>");
+		$("#rating").append("<option value='12b'>5.12b</option>");
+		$("#rating").append("<option value='12c'>5.12c</option>");
+		$("#rating").append("<option value='12d'>5.12d</option>");
+		$("#rating").append("<option value='13'>5.13</option>");
+	}
+	else{
+		$("#rating").append("<option value='' disabled='disabled' selected='selected'>Select a Rating</option>");
+		$("#rating").append("<option value='V0'>V0</option>");
+		$("#rating").append("<option value='V1'>V1</option>");
+		$("#rating").append("<option value='V2'>V2</option>");
+		$("#rating").append("<option value='V3'>V3</option>");
+		$("#rating").append("<option value='V4'>V4</option>");
+		$("#rating").append("<option value='V5'>V5</option>");
+		$("#rating").append("<option value='V6'>V6</option>");
+		$("#rating").append("<option value='V7'>V7</option>");
+		$("#rating").append("<option value='V8'>V8</option>");
+		$("#rating").append("<option value='V9'>V9</option>");
+	}
+}
+{% endblock %}

@@ -21,3 +21,4 @@ class Route(object):
 		self.color_1 = color_1
 		self.color_2 = color_2
 		self.special_base = special_base
+	
