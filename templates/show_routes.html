@@ -8,12 +8,10 @@
   <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
   	{% if status == "Sent" %}
     <li><a href="/unsend/{{id}}/{{page}}">Unmark Sent</a></li>
-    {% endif %}
-    {% if status == "Attempted" %}
+    {% elif status == "Attempted" %}
     <li><a href="/send/{{id}}/{{page}}">Mark Sent</a></li>
     <li><a href="/unattempt/{{id}}/{{page}}">Unmark Attempted</a></li>
-    {% endif %}
-    {% if status == "Actions" %}
+    {% else %}
     <li><a href="/send/{{id}}/{{page}}">Mark Sent</a></li>
     <li><a href="/attempt/{{id}}/{{page}}">Mark Attempted</a></li>
     {% endif %}
