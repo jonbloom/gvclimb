@@ -27,7 +27,6 @@
 
 {% block title %}Home{% endblock %}
 {% block head %}
-<script src="{{url_for('static',filename='cookie.js')}}"></script>
 {% endblock %}
 {% block body %}
 <a id="toprope"></a>
@@ -48,9 +47,9 @@
 		</tr>
 		{% for route in topropes %}
 		<tr>
-			<td>{{ route.name }}</td>
-			<td>{{ route.rope }}</td>
 			<td>{{ '5.' + route.rating }}</td>
+			<td>{{ route.rope }}</td>
+			<td>{{ route.name }}</td>
 			<td>{{ route.dateSet }}</td>
 			<td>{{ route.setter }}</td>
 			<td>{{ route.tape_div|safe }}</td>
@@ -69,9 +68,10 @@
 	<table class="table">
 
 		<tr>
-			<th width="35%">Name</th>
-			<th width="5%">Rope</th>
+			
 			<th width="5%">Rating</th>
+			<th width="5%">Rope</th>
+			<th width="35%">Name</th>
 			<th width="10%">Date Set</th>
 			<th width="20%">Setter</th>
 			<th width="15%">Tape</th>
@@ -82,9 +82,9 @@
 		{% for route in boulders %}
 		<tr>
 			
-			<td>{{ route.name }}</td>
-			<td>{{ route.rope }}</td>
 			<td>{{ route.rating }}</td>
+			<td>{{ route.rope }}</td>
+			<td>{{ route.name }}</td>
 			<td>{{ route.dateSet }}</td>
 			<td>{{ route.setter }}</td>
 			<td>{{ route.tape_div|safe }}</td>
