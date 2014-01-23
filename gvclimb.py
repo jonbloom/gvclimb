@@ -231,7 +231,48 @@ def delete(route_id):
 def admin():
 	all_setters = g.db.execute('select * from setters order by name asc')
 	setters = [dict(id=s[0],name=s[1]) for s in all_setters.fetchall()]
-	return render_template('admin.html', setters=setters)
+	default_colors = g.db.execute('select * from colors')
+	default_colors = dict(default_colors.fetchone())
+	tape_colors = g.db.execute('select * from tapeColors')
+	tape_colors = [dict(css=c[0],real=c[1]) for c in tape_colors.fetchall()]
+	return render_template('admin.html', setters=setters, default_colors=default_colors, tape_colors=tape_colors)
+@app.route('/update_colors', methods=['GET', 'POST'])
+def update_colors():
+	default_colors = g.db.execute('select * from colors')
+	default_colors = dict(default_colors.fetchone())
+	c_V0 = request.form['V0']
+	c_V1 = request.form['V1']
+	c_V2 = request.form['V2']
+	c_V3 = request.form['V3']
+	c_V4 = request.form['V4']
+	c_V5 = request.form['V5']
+	c_V6 = request.form['V6']
+	c_V7 = request.form['V7']
+	c_V8 = request.form['V8']
+
+	g.db.execute("update colors set '7' = '{}', '8' = '{}', '9' = '{}', '10a' = '{}', '10b' = '{}', '10c' = '{}', '10d' = '{}',  \
+		'11a' = '{}', '11b' = '{}', '11c' = '{}', '12d' = '{}', \
+		'12a' = '{}', '12b' = '{}', '12c' = '{}', '12d' = '{}', \
+		'V0' = '{}', 'V1' = '{}', 'V2' = '{}', 'V3' = '{}', 'V4' = '{}', \
+		'V5' = '{}', 'V6' = '{}', 'V7' = '{}', 'V8' = '{}'".format(
+		c_V0, c_V1, c_V2, c_V3, c_V3, c_V4, c_V4, c_V5, c_V5, c_V6, c_V6, c_V7, c_V7, c_V8, c_V8, 
+		c_V0, c_V1, c_V2, c_V3, c_V4, c_V5, c_V6, c_V7, c_V8))
+	g.db.commit()
+	return redirect(url_for('admin'))
+
+
+@app.route('/add_setter', methods=['POST'])
+def add_setter():
+	setter_name = request.form['name']
+	g.db.execute("insert into setters values (NULL, ?)",[setter_name])
+	g.db.commit()
+	return redirect(url_for('admin'))
+@app.route('/delete_setter/<id>')
+def delete_setter(id):
+	g.db.execute("delete from setters where id = ?",[id])
+	g.db.commit()
+	return redirect(url_for('admin'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None

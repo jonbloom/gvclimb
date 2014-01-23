@@ -5,7 +5,7 @@
   <button type="button" class="btn {{class}} btn-block dropdown-toggle" data-toggle="dropdown">
     {{status}} <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" role="menu">
+  <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
   	{% if status == "Sent" %}
     <li><a href="/unsend/{{id}}/{{page}}">Unmark Sent</a></li>
     {% endif %}

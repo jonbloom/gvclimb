@@ -1,32 +1,271 @@
 {% extends "base.html" %}
-{% block title %}Admin {% endblock %}
+{% block title %}Admin{% endblock %}
 {% block body %}
+{% macro color(css,real) -%}
+<option value="{{css}}">{{real}}</option>
+{% endmacro -%}
 <h1>Administration</h1>
 <div class="col-md-4 table-responsive">
 	<h3>Setters</h3>
 	<table class="table">
-		<tr>
-			<th>Name</th>
-			<th>Action</th>
-		</tr>
-		{% for s in setters %}
-		<tr>
-			<td>{{s.name}}</td>
-			<td><a href="#"><button type="button" class="btn btn-danger">x</button></td>
-		</tr>
-		{% endfor %}
-		<form action="" method="POST">
+		<thead>
 			<tr>
-				<td>
-					<input name="name" type="text" class="form-control" />
-				</td>
-				<td>
-					<button type="submit" class="btn btn-success">+</button>
-				</td>
+				<th>Name</th>
+				<th>Action</th>
 			</tr>
-		</form>
+		</thead>
+		<tbody>
+			{% for s in setters %}
+			<tr>
+				<td>{{s.name}}</td>
+				<td><a href="{{url_for('delete_setter', id=s.id)}}"><button type="button" class="btn btn-danger">x</button></td>
+			</tr>
+			{% endfor %}
+			<form action="{{url_for('add_setter')}}" method="POST">
+				<tr>
+					<td>
+						<input name="name" type="text" class="form-control" />
+					</td>
+					<td>
+						<button type="submit" class="btn btn-success">+</button>
+					</td>
+				</tr>
+			</form>
+		</tbody>
 		
 	</table>
-
 </div>
+<div class="col-md-8 table-responsive">
+	<h3>Default Colors</h3>
+	<form action="{{url_for('update_colors')}}" method="post">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>
+						TR
+					</th>
+					<th>
+						Boulder
+					</th>
+					<th>
+						Current
+					</th>
+					<th>
+						New
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						5.7
+					</td>
+					<td>
+						V0
+					</td>
+					<td>
+						<div class="form-control" style="text-align: center; background-color: {{ default_colors.V0 }};">&nbsp;</div>
+					</td>
+					<td>
+						<select class="form-control" name="V0" class="cell" id="V0">
+							<option disabled selected></option>
+							{% for c in tape_colors %}
+							{{color(c.css,c.real)}}
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						5.8
+					</td>
+					<td>
+						V1
+					</td>
+					<td>
+						<div class="form-control" style="text-align: center; background-color: {{ default_colors.V1 }};">&nbsp;</div>
+					</td>
+					<td>
+						<select class="form-control" name="V1" class="cell" id="V1">
+							<option disabled selected></option>
+							{% for c in tape_colors %}
+							{{color(c.css,c.real)}}
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						5.9
+					</td>
+					<td>
+						V2
+					</td>
+					<td>
+						<div class="form-control" style="text-align: center; background-color: {{ default_colors.V2 }};">&nbsp;</div>
+					</td>
+					<td>
+						<select class="form-control" name="V2" class="cell" id="V2">
+							<option disabled selected></option>
+							{% for c in tape_colors %}
+							{{color(c.css,c.real)}}
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						5.10a/b
+					</td>
+					<td>
+						V3
+					</td>
+					<td>
+						<div class="form-control" style="text-align: center; background-color: {{ default_colors.V3 }};">&nbsp;</div>
+					</td>
+					<td>
+						<select class="form-control" name="V3" class="cell" id="V3">
+							<option disabled selected></option>
+							
+							{% for c in tape_colors %}
+							{{color(c.css,c.real)}}
+							{% endfor %}
+							
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						5.10c/d
+					</td>
+					<td>
+						V4
+					</td>
+					<td>
+						<div class="form-control" style="text-align: center; background-color: {{ default_colors.V4 }};">&nbsp;</div>
+					</td>
+					<td>
+						<select class="form-control" name="V4" class="cell" id="V4">
+							<option disabled selected></option>
+							
+							{% for c in tape_colors %}
+							{{color(c.css,c.real)}}
+							{% endfor %}
+							
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						5.11a/b
+					</td>
+					<td>
+						V5
+					</td>
+					<td>
+						<div class="form-control" style="text-align: center; background-color: {{ default_colors.V5 }};">&nbsp;</div>
+					</td>
+					<td>
+						<select class="form-control" name="V5" class="cell" id="V5">
+							<option disabled selected></option>
+							
+							<optgroup label="Colors">
+								{% for c in tape_colors %}
+								{{color(c.css,c.real)}}
+								{% endfor %}
+
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							5.11c/d
+						</td>
+						<td>
+							V6
+						</td>
+						<td>
+							<div class="form-control" style="text-align: center; background-color: {{ default_colors.V6 }};">&nbsp;</div>
+						</td>
+						<td>
+							<select class="form-control" name="V6" class="cell" id="V6">
+								<option disabled selected></option>
+
+								{% for c in tape_colors %}
+								{{color(c.css,c.real)}}
+								{% endfor %}
+
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							5.12a/b
+						</td>
+						<td>
+							V7
+						</td>
+						<td>
+							<div class="form-control" style="text-align: center; background-color: {{ default_colors.V7 }};">&nbsp;</div>
+						</td>
+						<td>
+							<select class="form-control" name="V7" class="cell" id="V7">
+								<option disabled selected></option>
+
+								{% for c in tape_colors %}
+								{{color(c.css,c.real)}}
+								{% endfor %}
+
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							5.Ridiculous
+						</td>
+						<td>
+							VRidiculous
+						</td>
+						<td>
+							<div class="form-control" style="text-align: center; background-color: {{ default_colors.V8 }};">&nbsp;</div>
+						</td>
+						<td>
+							<select class="form-control" name="V8" class="cell" id="V8">
+								<option disabled selected></option>
+
+
+								{% for c in tape_colors %}
+								{{color(c.css,c.real)}}
+								{% endfor %}
+
+
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<button class="btn btn-success" type="submit">Update Colors</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+
+
+
+	</table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+$("#V0").val("{{default_colors.V0}}");
+$("#V1").val("{{default_colors.V1}}");
+$("#V2").val("{{default_colors.V2}}");
+$("#V3").val("{{default_colors.V3}}");
+$("#V4").val("{{default_colors.V4}}");
+$("#V5").val("{{default_colors.V5}}");
+$("#V6").val("{{default_colors.V6}}");
+$("#V7").val("{{default_colors.V7}}");
+$("#V8").val("{{default_colors.V8}}");
 {% endblock %}
