@@ -1,21 +1,23 @@
 {% extends "base.html" %}
 
-{% macro action_button(id,class,status,page)-%}
+{% macro action_button(id,class,status="none",page)-%}
 <div class="btn-group btn-block">
   <button type="button" class="btn {{class}} btn-block dropdown-toggle" data-toggle="dropdown">
     {{status}} <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
-  	{% if status == "Attempted" %}
+  	{% if status == "Sent" %}
+    <li><a href="/unsend/{{id}}/{{page}}">Unmark Sent</a></li>
+    {% endif %}
+    {% if status == "Attempted" %}
+    <li><a href="/send/{{id}}/{{page}}">Mark Sent</a></li>
     <li><a href="/unattempt/{{id}}/{{page}}">Unmark Attempted</a></li>
-    {% else %}
+    {% endif %}
+    {% if status == "Actions" %}
+    <li><a href="/send/{{id}}/{{page}}">Mark Sent</a></li>
     <li><a href="/attempt/{{id}}/{{page}}">Mark Attempted</a></li>
     {% endif %}
-    {% if status == "Sent" %}
-    <li><a href="/unsend/{{id}}/{{page}}">Unmark Sent</a></li>
-    {% else %}
-    <li><a href="/send/{{id}}/{{page}}">Mark Sent</a></li>
-    {% endif %}
+    
     {% if session.is_admin %}
     <li class="divider"></li>
     <li><a href="/edit/{{id}}">Edit Route</a></li>

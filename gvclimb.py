@@ -40,8 +40,8 @@ def home():
 	if 'logged_in' in session and session['logged_in']:
 		attempted_ids = g.db.execute('select attempted_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
 		sent_ids = g.db.execute('select sent_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-		attempted_ids = [int(i) for i in attempted_ids if i]
-		sent_ids = [int(i) for i in sent_ids if i]
+		attempted_ids = list(set([int(i) for i in attempted_ids if i]))
+		sent_ids = list(set([int(i) for i in sent_ids if i]))
 	for row in all_routes:
 		if row[9] == "none":
 			base = default_colors[str(row[2])]
@@ -83,29 +83,30 @@ def profile():
 		sent_ids = g.db.execute('select sent_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
 		attempted_ids = [int(i) for i in attempted_ids if i]
 		sent_ids = [int(i) for i in sent_ids if i]
-	for row in all_routes:
-		if row[9] == "none":
-			base = default_colors[str(row[2])]
-		else:  
-			base = row[9]
-		if row[0] in sent_ids:
-			btn_class = 'btn-success'
-			status = "Sent"
-			routes_sent.append(dict(id=row[0], routeType=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
-				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status))
-		elif int(row[0]) in attempted_ids:
-			btn_class = 'btn-warning'
-			status = "Attempted"
-			routes_attempted.append(dict(id=row[0], routeType=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
-				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status))
-	#return str(attempted_ids)
-	return render_template('profile.html', attempted=routes_attempted, sent=routes_sent, colors=default_colors)
+		for row in all_routes:
+			if row[9] == "none":
+				base = default_colors[str(row[2])]
+			else:  
+				base = row[9]
+			if row[0] in sent_ids:
+				btn_class = 'btn-success'
+				status = "Sent"
+				routes_sent.append(dict(id=row[0], routeType=row[1], rating=row[2], 
+					rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+					tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status))
+			elif int(row[0]) in attempted_ids:
+				btn_class = 'btn-warning'
+				status = "Attempted"
+				routes_attempted.append(dict(id=row[0], routeType=row[1], rating=row[2], 
+					rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+					tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status))
+		return render_template('profile.html', attempted=routes_attempted, sent=routes_sent, colors=default_colors)
+	else:
+		abort(401)
 
 
 
-@app.route('/add/', methods=['GET','POST'])
+@app.route('/add', methods=['GET','POST'])
 def add():
 	if 'is_admin' in session and session['is_admin']:
 		all_setters = g.db.execute('select * from setters order by name asc')
@@ -163,7 +164,11 @@ def edit(route_id):
 		else:
 			rating_string = r_rating
 		r_blurb = r_name + ', ' + rating_string + ', Rope ' + r_rope
-		test_string = "update routes set type = '{1}', rating = '{2}', rope = '{3}', name = '{4}', date = '{5}', setter = '{6}', color_1 = '{7}', color_2 = '{8}', special_base = '{9}', blurb = '{10}', updater = '{11}' where id = '{12}'".format(r_id[:-1],r_type, r_rating, r_rope, r_name, r_date, r_setter,r_color1, r_color2, r_special_base, r_blurb, r_updater, r_id[:-1])
+		test_string = "update routes set type = '{1}', rating = '{2}', \
+		rope = '{3}', name = '{4}', date = '{5}', setter = '{6}', color_1 = '{7}', \
+		color_2 = '{8}', special_base = '{9}', blurb = '{10}', updater = '{11}'  where id = \
+		'{12}'".format(r_id[:-1],r_type, r_rating, r_rope, r_name, r_date, r_setter,r_color1, 
+			r_color2, r_special_base, r_blurb, r_updater, r_id[:-1])
 		g.db.execute(test_string)
 		g.db.commit()
 		return redirect(url_for('home'))
@@ -198,7 +203,7 @@ def send(route_id,page):
 	else:
 		route_id = str(route_id) + ', '
 		g.db.execute("update users set sent_ids = (sent_ids || '{0}') where username = '{1}'".format(route_id,session.get('logged_in_as')))
-		g.db.execute("update users set attempted_ids = replace(attempted_ids,'{0}','') where username = '{1}'".format(route_id, session.get('logged_in_as')))
+		g.db.execute("update users set attempted_ids = (attempted_ids || '{0}') where username = '{1}'".format(route_id,session.get('logged_in_as')))
 		g.db.commit()
 	return redirect(url_for(page))
 
@@ -222,7 +227,11 @@ def delete(route_id):
 		g.db.commit()
 	return redirect(url_for(page))
 
-
+@app.route('/admin')
+def admin():
+	all_setters = g.db.execute('select * from setters order by name asc')
+	setters = [dict(id=s[0],name=s[1]) for s in all_setters.fetchall()]
+	return render_template('admin.html', setters=setters)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None

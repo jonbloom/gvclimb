@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Admin {% endblock %}
+{% block body %}
+<h1>Administration</h1>
+<div class="col-md-4 table-responsive">
+	<h3>Setters</h3>
+	<table class="table">
+		<tr>
+			<th>Name</th>
+			<th>Action</th>
+		</tr>
+		{% for s in setters %}
+		<tr>
+			<td>{{s.name}}</td>
+			<td><a href="#"><button type="button" class="btn btn-danger">x</button></td>
+		</tr>
+		{% endfor %}
+		<form action="" method="POST">
+			<tr>
+				<td>
+					<input name="name" type="text" class="form-control" />
+				</td>
+				<td>
+					<button type="submit" class="btn btn-success">+</button>
+				</td>
+			</tr>
+		</form>
+		
+	</table>
+
+</div>
+{% endblock %}
