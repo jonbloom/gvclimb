@@ -2,6 +2,16 @@ body{
 	background-color: #EEE;
     padding: 50px;
 }
+.btn-block{
+	padding: 5px;
+}
+.tape{
+	min-height: 40px;
+}
+#tape_preview{
+	height: 55px;
+	background-color: #EEE;
+}
 .color{
 	width:auto;
 	text-align:center;

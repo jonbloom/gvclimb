@@ -29,8 +29,8 @@
 {% block css %}
 {% endblock %}
 {% block body %}
-<a id="toprope"></a>
-<h2>Top Rope</h2>
+<a id="sent"></a>
+<h2>Sent</h2>
 <div class="table-responsive">
 	<table class="table">
 		<tr>
@@ -41,11 +41,11 @@
 			<th width="20%">Setter</th>
 			<th width="15%">Tape</th>
 			{% if session.logged_in %}
-			<th width="100px">Actions</th>
+			<th width="10%">Actions</th>
 			{% endif %}
 
 		</tr>
-		{% for route in topropes %}
+		{% for route in sent %}
 		<tr>
 			<td>{{ route.name }}</td>
 			<td>{{ route.rope }}</td>
@@ -54,7 +54,7 @@
 			<td>{{ route.setter }}</td>
 			<td>{{ route.tape_div|safe }}</td>
 			{% if session.logged_in %}
-			<td>{{ action_button(route.id,route.btn_class,route.status,'home') }}</td>
+			<td>{{ action_button(route.id,route.btn_class,route.status,'profile') }}</td>
 			{% endif %}
 
 		</tr>
@@ -62,8 +62,8 @@
 		{% endfor %}
 	</table>
 </div>
-<a id="boulder"></a>
-<h2>Boulder</h2>
+<a id="attempted"></a>
+<h2>Attempted</h2>
 <div class="table-responsive">
 	<table class="table">
 
@@ -75,10 +75,10 @@
 			<th width="20%">Setter</th>
 			<th width="15%">Tape</th>
 			{% if session.logged_in %}
-			<th width="100px">Actions</th>
+			<th width="10%">Actions</th>
 			{% endif %}
 		</tr>
-		{% for route in boulders %}
+		{% for route in attempted %}
 		<tr>
 			
 			<td>{{ route.name }}</td>
@@ -88,7 +88,7 @@
 			<td>{{ route.setter }}</td>
 			<td>{{ route.tape_div|safe }}</td>
 			{% if session.logged_in %}
-			<td>{{ action_button(route.id,route.btn_class,route.status,'home') }}</td>
+			<td>{{ action_button(route.id,route.btn_class,route.status,'profile') }}</td>
 			{% endif %}
 			
 		</tr>

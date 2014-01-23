@@ -15,174 +15,204 @@
 
 
 <h2>Add A Route</h2>
-<form role="form" action="{{url_for('add_route')}}" method="POST" style="width: 40%;">
-	<div class="form-group">
-		<label for="route_type">Route Type</label>
-		<select name="route_type" class="form-control"onchange="ratings(this.value)">
-			<option selected="selected" disabled="disabled" >Select A Route Type</option>
-			<option value="toprope">Top Rope</option>
-			<option value="boulder">Boulder</option>
-		</select>
+<div class="col-md-12">
+<form role="form" action="{{ url_for('add') }}" method="POST">
+	<div class="col-md-4">
+		<div class="form-group">
+			<label for="route_type">Route Type</label>
+			<select name="route_type" class="form-control"onchange="ratings(this.value)" id="route_type">
+				<option selected="selected" disabled="disabled" >Select A Route Type</option>
+				<option value="toprope">Top Rope</option>
+				<option value="boulder">Boulder</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="rating">Rating</label>
+			<select name="rating" class="form-control" onchange="tapePreview()" id="rating">
+				<option selected="selected" disabled="disabled">Select A Route Type</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="rope">Rope</label>
+			<select name="rope" class="form-control" onchange="" id="rope">
+				<option selected="selected" disabled="disabled">Select A Rope</option>
+				<option value=1>1</option>
+				<option value=2>2</option>
+				<option value=3>3</option>
+				<option value=4>4</option>
+				<option value=5>5</option>
+				<option value=6>6</option>
+				<option value=7>7</option>
+				<option value=8>8</option>
+				<option value=9>9</option>
+				<option value=10>10</option>
+				<option value=11>11</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="name">Route Name</label>
+			<input name="name" type="text" class="form-control" id="name" placeholder="Enter the route name">
+		</div>
 	</div>
-	<div class="form-group">
-		<label for="rating">Rating</label>
-		<select name="rating" class="form-control" onchange="" id="rating">
-			<option selected="selected" disabled="disabled">Select A Route Type</option>
-		</select>
-	</div>
-	<div class="form-group">
-		<label for="rope">Rope</label>
-		<select name="rope" class="form-control" onchange="" id="rope">
-			<option selected="selected" disabled="disabled">Select A Rope</option>
-			<option value=1>1</option>
-			<option value=2>2</option>
-			<option value=3>3</option>
-			<option value=4>4</option>
-			<option value=5>5</option>
-			<option value=6>6</option>
-			<option value=7>7</option>
-			<option value=8>8</option>
-			<option value=9>9</option>
-			<option value=10>10</option>
-			<option value=11>11</option>
-		</select>
-	</div>
-	<div class="form-group">
-		<label for="name">Route Name</label>
-		<input name="name" type="text" class="form-control" id="name" placeholder="Enter the route name">
-	</div>
-	<div class="form-group">
-		<label for="date">Date Set</label>
-		<input name="date" type="text" class="form-control jdpicker" id="date" placeholder="">
-		<input type="hidden" name="date_2" class="jdpicker" />
-	</div>
-	<div class="form-group">
-		<label for="setter">Route Setter</label>
-		<select name="setter" class="form-control" id="setter" multiple="multiple" size=3>
-			<option selected="selected" disabled="disabled">Select A Setter</option>
-			{% for s in setters %}
-			{{setter(s.name)}}
-			{% endfor %}
-		</select>
-	</div>
-	<div class="form-group">
-		<label for="special_base">Special Base</label>
-		<select name="special_base" class="form-control" id="special_base" onchange="">
-			<option value="none" selected="selected">None</option>
-			<optgroup label="Colors">
-				{% for c in colors %}
-				{{color(c.css,c.real)}}
+	<div class="col-md-4">
+		
+		<div class="form-group">
+			<label for="date">Date Set</label>
+			<input name="date" type="text" class="form-control" id="date" placeholder="">
+		</div>
+		<div class="form-group">
+			<label for="setter">Route Setter</label>
+			<select name="setter" class="form-control" id="setter" multiple="multiple" size="5" data-original-title="Hold down Ctrl to select multiple setters.">
+				<option selected="selected" disabled="disabled" value="Unknown">Select A Setter</option>
+				{% for s in setters %}
+				{{setter(s.name)}}
 				{% endfor %}
-			</optgroup>
-			<optgroup label="Special">
-				<option value="floral">Golden Wrench</option>
-				<option value="moustaches">Moustaches</option>
-				<option value="fire">Fire</option>
-				<option value="spiders">Spiders</option>
-				<option value="spiderman">Spiderman</option>
-				<option value="skulls">Skulls</option>
-				<option value="penguin">Penguins</option>
-				<option value="rainbow">ZigZag</option>
-				<option value="lips">Lips</option>
-				<option value="biebber">Justin Bieber</option>
-				<option value="pickles">Pickles</option>
-				<option value="darkstripes">Dark Stripes</option>
-				<option value="greensquiggles">Green Squiggles</option>
-			</optgroup>
-		</select>
+			</select>
+
+		</div>
 	</div>
-	<div class="form-group">
-		<label for="color_1">Secondary Color 1</label>
-		<select name="color_1" class="form-control" id="color_1" onchange="">
-			<option value="none" selected="selected">None</option>
-			<optgroup label="Colors">
-				{% for c in colors %}
-				{{color(c.css,c.real)}}
-				{% endfor %}
-			</optgroup>
-			<optgroup label="Special">
-				<option value="floral">Golden Wrench</option>
-				<option value="moustaches">Moustaches</option>
-				<option value="fire">Fire</option>
-				<option value="spiders">Spiders</option>
-				<option value="spiderman">Spiderman</option>
-				<option value="skulls">Skulls</option>
-				<option value="penguin">Penguins</option>
-				<option value="rainbow">ZigZag</option>
-				<option value="lips">Lips</option>
-				<option value="biebber">Justin Bieber</option>
-				<option value="pickles">Pickles</option>
-				<option value="darkstripes">Dark Stripes</option>
-				<option value="greensquiggles">Green Squiggles</option>
-			</optgroup>
-		</select>
+	<div class="col-md-4">
+		<div class="form-group">
+			<label for="special_base">Special Base</label>
+			<select name="special_base" class="form-control" id="special_base" onchange="tapePreview()">
+				<option value="none" selected="selected">None</option>
+				<optgroup label="Colors">
+					{% for c in colors %}
+					{{color(c.css,c.real)}}
+					{% endfor %}
+				</optgroup>
+				<optgroup label="Special">
+					<option value="floral">Golden Wrench</option>
+					<option value="moustaches">Moustaches</option>
+					<option value="fire">Fire</option>
+					<option value="spiders">Spiders</option>
+					<option value="spiderman">Spiderman</option>
+					<option value="skulls">Skulls</option>
+					<option value="penguin">Penguins</option>
+					<option value="rainbow">ZigZag</option>
+					<option value="lips">Lips</option>
+					<option value="biebber">Justin Bieber</option>
+					<option value="pickles">Pickles</option>
+					<option value="darkstripes">Dark Stripes</option>
+					<option value="greensquiggles">Green Squiggles</option>
+				</optgroup>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="color_1">Secondary Color 1</label>
+			<select name="color_1" class="form-control" id="color_1" onchange="tapePreview()">
+				<option value="none" selected="selected">None</option>
+				<optgroup label="Colors">
+					{% for c in colors %}{{color(c.css,c.real)}}{% endfor %}
+				</optgroup>
+				<optgroup label="Special">
+					<option value="floral">Golden Wrench</option>
+					<option value="moustaches">Moustaches</option>
+					<option value="fire">Fire</option>
+					<option value="spiders">Spiders</option>
+					<option value="spiderman">Spiderman</option>
+					<option value="skulls">Skulls</option>
+					<option value="penguin">Penguins</option>
+					<option value="rainbow">ZigZag</option>
+					<option value="lips">Lips</option>
+					<option value="biebber">Justin Bieber</option>
+					<option value="pickles">Pickles</option>
+					<option value="darkstripes">Dark Stripes</option>
+					<option value="greensquiggles">Green Squiggles</option>
+				</optgroup>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="color_2">Secondary Color 2</label>
+			<select name="color_2" class="form-control" id="color_2" onchange="tapePreview()">
+				<option value="none" selected="selected">None</option>
+				<optgroup label="Colors">
+					{% for c in colors %}
+					{{color(c.css,c.real)}}
+					{% endfor %}
+				</optgroup>
+				<optgroup label="Special">
+					<option value="floral">Golden Wrench</option>
+					<option value="moustaches">Moustaches</option>
+					<option value="fire">Fire</option>
+					<option value="spiders">Spiders</option>
+					<option value="spiderman">Spiderman</option>
+					<option value="skulls">Skulls</option>
+					<option value="penguin">Penguins</option>
+					<option value="rainbow">ZigZag</option>
+					<option value="lips">Lips</option>
+					<option value="biebber">Justin Bieber</option>
+					<option value="pickles">Pickles</option>
+					<option value="darkstripes">Dark Stripes</option>
+					<option value="greensquiggles">Green Squiggles</option>
+				</optgroup>
+			</select>
+
+		</div>
+		<div class="form-group">
+		<div id="tape_preview" class="form-control"></div>
 	</div>
-<div class="form-group">
-		<label for="color_2">Secondary Color 1</label>
-		<select name="color_2" class="form-control" id="color_2" onchange="">
-			<option value="none" selected="selected">None</option>
-			<optgroup label="Colors">
-				{% for c in colors %}
-				{{color(c.css,c.real)}}
-				{% endfor %}
-			</optgroup>
-			<optgroup label="Special">
-				<option value="floral">Golden Wrench</option>
-				<option value="moustaches">Moustaches</option>
-				<option value="fire">Fire</option>
-				<option value="spiders">Spiders</option>
-				<option value="spiderman">Spiderman</option>
-				<option value="skulls">Skulls</option>
-				<option value="penguin">Penguins</option>
-				<option value="rainbow">ZigZag</option>
-				<option value="lips">Lips</option>
-				<option value="biebber">Justin Bieber</option>
-				<option value="pickles">Pickles</option>
-				<option value="darkstripes">Dark Stripes</option>
-				<option value="greensquiggles">Green Squiggles</option>
-			</optgroup>
-		</select>
 	</div>
 	<input type="hidden" name= "updater" value="{{ session.logged_in_as}}">
-	<button type="submit" class="btn btn-submit">Add Route</button>
+	
+	
+</div>
+<div class="col-md-6">
+<h2>Everything look good?</h2>
+<button type="submit" class="btn btn-submit">Add Route</button>
+</div>
 </form>
-{{setters}}
 {% endblock %}
 {% block scripts %}
-function ratings(type){
-	$('#rating option').remove();
-	if (type == 'toprope'){
-		$("#rating").append("<option value='' disabled='disabled' selected='selected'>Select a Rating</option>");
-		$("#rating").append("<option value='7'>5.7</option>");
-		$("#rating").append("<option value='8'>5.8</option>");
-		$("#rating").append("<option value='9'>5.9</option>");
-		$("#rating").append("<option value='10a'>5.10a</option>");
-		$("#rating").append("<option value='10b'>5.10b</option>");
-		$("#rating").append("<option value='10c'>5.10c</option>");
-		$("#rating").append("<option value='10d'>5.10d</option>");
-		$("#rating").append("<option value='11a'>5.11a</option>");
-		$("#rating").append("<option value='11b'>5.11b</option>");
-		$("#rating").append("<option value='11c'>5.11c</option>");
-		$("#rating").append("<option value='11d'>5.11d</option>");
-		$("#rating").append("<option value='12a'>5.12a</option>");
-		$("#rating").append("<option value='12b'>5.12b</option>");
-		$("#rating").append("<option value='12c'>5.12c</option>");
-		$("#rating").append("<option value='12d'>5.12d</option>");
-		$("#rating").append("<option value='13'>5.13</option>");
-	}
-	else{
-		$("#rating").append("<option value='' disabled='disabled' selected='selected'>Select a Rating</option>");
-		$("#rating").append("<option value='V0'>V0</option>");
-		$("#rating").append("<option value='V1'>V1</option>");
-		$("#rating").append("<option value='V2'>V2</option>");
-		$("#rating").append("<option value='V3'>V3</option>");
-		$("#rating").append("<option value='V4'>V4</option>");
-		$("#rating").append("<option value='V5'>V5</option>");
-		$("#rating").append("<option value='V6'>V6</option>");
-		$("#rating").append("<option value='V7'>V7</option>");
-		$("#rating").append("<option value='V8'>V8</option>");
-		$("#rating").append("<option value='V9'>V9</option>");
-	}
+
+function tapePreview(){
+var rating = $("#rating").val();
+var special_base = $("#special_base").val();
+var color_1 = $("#color_1").val();
+var color_2 = $("#color_2").val();
+var to_load = "/tape/"+rating+"/"+special_base+"/"+color_1+"/"+color_2;
+console.log(to_load);
+$("#tape_preview").load(to_load);
 }
+function ratings(type){
+$('#rating option').remove();
+if (type == 'toprope'){
+$("#rating").append("<option value='' disabled='disabled' selected='selected'>Select a Rating</option>");
+$("#rating").append("<option value='7'>5.7</option>");
+$("#rating").append("<option value='8'>5.8</option>");
+$("#rating").append("<option value='9'>5.9</option>");
+$("#rating").append("<option value='10a'>5.10a</option>");
+$("#rating").append("<option value='10b'>5.10b</option>");
+$("#rating").append("<option value='10c'>5.10c</option>");
+$("#rating").append("<option value='10d'>5.10d</option>");
+$("#rating").append("<option value='11a'>5.11a</option>");
+$("#rating").append("<option value='11b'>5.11b</option>");
+$("#rating").append("<option value='11c'>5.11c</option>");
+$("#rating").append("<option value='11d'>5.11d</option>");
+$("#rating").append("<option value='12a'>5.12a</option>");
+$("#rating").append("<option value='12b'>5.12b</option>");
+$("#rating").append("<option value='12c'>5.12c</option>");
+$("#rating").append("<option value='12d'>5.12d</option>");
+$("#rating").append("<option value='13'>5.13</option>");
+}
+else{
+$("#rating").append("<option value='' disabled='disabled' selected='selected'>Select a Rating</option>");
+$("#rating").append("<option value='V0'>V0</option>");
+$("#rating").append("<option value='V1'>V1</option>");
+$("#rating").append("<option value='V2'>V2</option>");
+$("#rating").append("<option value='V3'>V3</option>");
+$("#rating").append("<option value='V4'>V4</option>");
+$("#rating").append("<option value='V5'>V5</option>");
+$("#rating").append("<option value='V6'>V6</option>");
+$("#rating").append("<option value='V7'>V7</option>");
+$("#rating").append("<option value='V8'>V8</option>");
+$("#rating").append("<option value='V9'>V9</option>");
+}
+}
+$('#date').jdPicker({
+date_format:"mm/dd/yy",
+show_week:0,
+start_of_week:0,
+});
 
 {% endblock %}
