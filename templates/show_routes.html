@@ -26,7 +26,8 @@
 {%- endmacro %}
 
 {% block title %}Home{% endblock %}
-{% block css %}
+{% block head %}
+<script src="{{url_for('static',filename='cookie.js')}}"></script>
 {% endblock %}
 {% block body %}
 <a id="toprope"></a>
@@ -96,6 +97,14 @@
 		{% endfor %}
 	</table>
 </div>
-{{a}}
-{{s}}
 {% endblock %}
+{% block scripts %}
+if ( $.cookie("scroll") !== null )
+    {
+      $(document).scrollTop( $.cookie("scroll") );
+   }
+   $(window).on("scroll", function()
+   {
+     $.cookie("scroll", $(document).scrollTop() );
+   });
+ {% endblock %}
