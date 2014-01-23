@@ -402,8 +402,8 @@ jdPicker.prototype = {
   setPosition: function() {
     var offset = this.input.offset();
     this.rootLayers.css({
-      top: offset.top + this.input.outerHeight(),
-      left: offset.left
+      top: 64,
+      left: 45
     });
     
     if (this.ieframe) {

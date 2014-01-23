@@ -62,7 +62,7 @@
 		</div>
 		<div class="form-group">
 			<label for="setter">Route Setter</label>
-			<select name="setter" class="form-control" id="setter" multiple="multiple" size="5" data-original-title="Hold down Ctrl to select multiple setters.">
+			<select name="setter" class="form-control" id="setter" multiple="multiple" size="5" data-original-title="Hold down Ctrl/&#8984; to select multiple setters.">
 				<option selected="selected" disabled="disabled" value="Unknown">Select A Setter</option>
 				{% for s in setters %}
 				{{setter(s.name)}}
@@ -232,5 +232,6 @@ date_format:"mm/dd/yy",
 show_week:0,
 start_of_week:0,
 });
+$('#setter').tooltip();
 
 {% endblock %}
