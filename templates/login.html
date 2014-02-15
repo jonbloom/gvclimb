@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Add Route{% endblock %}
 {% block body %}
+<div class="col-md-4">
 {% if error %}
 <div class="bs-callout bs-callout-danger">
+      <h4>
+        Error
+      </h4>
       {{ error }}
-    </div>
+</div>
 {% endif %}
+
 <form role="form" action="{{url_for('login')}}" method="POST">
   <div class="form-group">
     <label for="username">Username</label>
@@ -17,4 +22,5 @@
   </div>
   <button type="submit" class="btn btn-default">Login</button>
 </form>
+</div>
 {% endblock %}

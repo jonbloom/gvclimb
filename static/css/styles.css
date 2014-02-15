@@ -44,3 +44,6 @@
 .table tr td{
 	vertical-align: middle;
 }
+.r_sort{
+	display:none;
+}

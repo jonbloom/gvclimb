@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Route Comm.{% endblock %}
+{% block head %}
+{% endblock %}
+{% block body %}
+<a id="toprope"></a>
+<h2>Routes Requested to be Removed</h2>
+<div class="table-responsive">
+	<table class="table">
+		<tr>
+			<th width="5%">Rating</th>
+			<th width="5%">Rope</th>
+			<th width="30%">Name</th><th width="10%">Date Set</th>
+			<th width="20%">Setter</th>
+			<th width="15%">Tape</th>
+			<th width="5%">Votes</th>
+			{% if session.logged_in %}
+			<th width="100px">Actions</th>
+			{% endif %}
+
+		</tr>
+		{% for route in routes %}
+		<tr>
+			<td>{{ '5.' + route.rating }}</td>
+			<td>{{ route.rope }}</td>
+			<td>{{ route.name }}</td>
+			<td>{{ route.dateSet }}</td>
+			<td>{{ route.setter }}</td>
+			<td>{{ route.tape_div|safe }}</td>
+			<td>{{ route.votes}}</td>
+			{% if session.logged_in %}
+			<td>{{ action_button(route.id,route.btn_class,route.status,'comm',route.voted) }}</td>
+			{% endif %}
+
+		</tr>
+		{% else %}
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+{% block scripts %}
+if ( $.cookie("scroll") !== null )
+    {
+      $(document).scrollTop( $.cookie("scroll") );
+   }
+   $(window).on("scroll", function()
+   {
+     $.cookie("scroll", $(document).scrollTop() );
+   });
+ {% endblock %}
