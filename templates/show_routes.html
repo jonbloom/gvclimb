@@ -7,7 +7,7 @@
 {% block body %}
 <a id="toprope"></a>
 <h2>Top Rope</h2>
-<div class="table-responsive">
+<!--div class="table-responsive">
 	<table class="table tablesorter" id="table_toprope">
 		<thead>
 			<tr>
@@ -38,7 +38,21 @@
 			{% endfor %}
 		</tbody>
 	</table>
-</div>
+</div-->
+{% for route in topropes %}
+			<div>
+				<div class="col-md-1"><span class="r_sort">{{route.sort}}</span>{{ '5.' + route.rating }}</div>
+				<div class="col-md-1">{{ route.rope }}</div>
+				<div class="col-md-3">{{ route.name }}</div>
+				<div class="col-md-1">{{ route.dateSet }}</div>
+				<div class="col-md-2">{{ route.setter }}</div>
+				<div class="col-md-2">{{ route.tape_div|safe }}</div>
+				{% if session.logged_in %}
+				<div class="col-md-2">{{ action_button(route.id,route.btn_class,route.status,'home', route.voted) }}</div>
+				{% endif %}
+			</div>
+			{% else %}
+			{% endfor %}
 <a id="boulder"></a>
 <h2>Boulder</h2>
 <div class="table-responsive tablesorter">

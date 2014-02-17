@@ -99,7 +99,12 @@ body{
 .visible-xs {
 display: inline-block!important;
 }
-}
 .hidden-xs {
+	display: none !important;
+}
+}
+@media (min-width: 768px){
+	.hidden-xs {
 	display: inline !important;
+}
 }
