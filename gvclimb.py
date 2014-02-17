@@ -21,34 +21,34 @@ def connect_db():
 def before_request():
 	g.db = connect_db()
 	g.db.row_factory = sqlite3.Row
+	g.data = get_data()
 @app.teardown_request
 def teardown_request(exception):
 	db = getattr(g, 'db', None)
 	if db is not None:
 		db.close()
 
-@app.route('/')
-def home():
+def get_data():
+	rtn = {'tr': [], 'b': [], 'sent': [], 'attempted': [], 'comm': []}
 	all_routes = g.db.execute('select r.*, k.key from routes as r join orderkeys as k on k.rating = r.rating order by k.key')
+	comm_routes = g.db.execute("select r.*, c.num_votes from routes r, route_comm c where r.id = c.route_id;").fetchall()
 	colors = g.db.execute('select * from colors')
 	default_colors = colors.fetchone()
-	routes_toprope = []
-	routes_boulder = []
 	sent_ids = []
 	attempted_ids = []
-	voted_ids = []
-	status = 'Actions'
-	btn_class = ''
+	user_voted_ids = []
 	if 'logged_in' in session and session['logged_in']:
 		attempted_ids = g.db.execute('select attempted_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
 		sent_ids = g.db.execute('select sent_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-		voted_ids = g.db.execute('select vote_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
+		user_voted_ids = g.db.execute('select vote_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
 		attempted_ids = [int(i) for i in attempted_ids if i]
 		sent_ids = [int(i) for i in sent_ids if i]
-		votev_ids = [int(i) for i in voted_ids if i]
-	for row in all_routes:
+		user_voted_ids = [int(i) for i in user_voted_ids if i]
+	for row in comm_routes:
 		voted = str(False)
-		if int(row[0]) in voted_ids:
+		status = 'Actions'
+		btn_class = ''
+		if int(row[0]) in user_voted_ids:
 			voted = str(True)
 		if row[9] == "none":
 			base = default_colors[str(row[2])]
@@ -62,103 +62,59 @@ def home():
 			status = "Attempted"
 		else:
 			btn_class = 'btn-default'
-		if row[1] == "toprope":
-			routes_toprope.append(dict(id=row[0], routeType=row[1], rating=row[2], 
+		if row[12] > 0:
+			rtn['comm'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
 				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
-				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
-		else:
-			routes_boulder.append(dict(id=row[0], routeType=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
-				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
-		status = "Action"
-		
-	return render_template('show_routes.html', topropes=routes_toprope, boulders=routes_boulder, colors=default_colors)
-
-
-@app.route('/profile')
-def profile():
-	require_logged_in()
-	all_routes = g.db.execute('select * from routes as r join orderkeys as k on k.rating = r.rating order by k.key')
-	colors = g.db.execute('select * from colors')
-	default_colors = colors.fetchone()
-	routes_attempted = []
-	routes_sent = []
-	sent_ids = []
-	attempted_ids = []
-	sent=0
-	status = 'Actions'
-	btn_class = ''
-	attempted_ids = g.db.execute('select attempted_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-	sent_ids = g.db.execute('select sent_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-	voted_ids = g.db.execute('select vote_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-	attempted_ids = [int(i) for i in attempted_ids if i]
-	sent_ids = [int(i) for i in sent_ids if i]
-	voted_ids = [int(i) for i in voted_ids if i]
+				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status, voted=voted, num_votes=row[12]))
 	for row in all_routes:
 		voted = str(False)
-		if int(row[0]) in voted_ids:
+		status = 'Actions'
+		btn_class = ''
+		if int(row[0]) in user_voted_ids:
 			voted = str(True)
 		if row[9] == "none":
 			base = default_colors[str(row[2])]
 		else:  
 			base = row[9]
-		if row[0] in sent_ids:
+		if int(row[0]) in sent_ids:
 			btn_class = 'btn-success'
 			status = "Sent"
-			routes_sent.append(dict(id=row[0], routeType=row[1], rating=row[2], 
+			rtn['sent'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
 				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status, voted=voted))
 		elif int(row[0]) in attempted_ids:
 			btn_class = 'btn-warning'
 			status = "Attempted"
-			routes_attempted.append(dict(id=row[0], routeType=row[1], rating=row[2], 
+			rtn['attempted'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
 				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status, voted=voted))
+		else:
+			btn_class = 'btn-default'
+		if row[1] == "toprope":
+			rtn['tr'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
+				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
+		else:
+			rtn['b'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
+				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
+	return rtn
 		
-	return render_template('profile.html', attempted=routes_attempted, sent=routes_sent, colors=default_colors)
+
+
+@app.route('/')
+def home():
+	return render_template('show_routes.html', topropes=g.data['tr'], boulders=g.data['b'])
+
+
+@app.route('/profile')
+def profile():
+	require_logged_in()
+	return render_template('profile.html', attempted=g.data['attempted'], sent=g.data['sent'])
 
 @app.route('/comm')
 def comm():
-	voted_routes = g.db.execute("select r.*, c.num_votes from routes r, route_comm c where r.id = c.route_id;").fetchall()
-	routes = []
-	colors = g.db.execute('select * from colors')
-	default_colors = colors.fetchone()
-	sent_ids = []
-	attempted_ids = []
-	voted_ids = []
-	status = 'Actions'
-	btn_class = ''
-	if 'logged_in' in session and session['logged_in']:
-		attempted_ids = g.db.execute('select attempted_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-		sent_ids = g.db.execute('select sent_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-		voted_ids = g.db.execute('select vote_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-		voted_ids = [int(i) for i in voted_ids if i]
-		attempted_ids = list(set([int(i) for i in attempted_ids if i]))
-		sent_ids = list(set([int(i) for i in sent_ids if i]))
-
-	for v_route in voted_routes:
-		voted = str(False)
-		if v_route[12] > 0:
-			if int(v_route[0]) in voted_ids:
-				voted = str(True)
-			if v_route[9] == "none":
-				base = default_colors[str(v_route[2])]
-			else:  
-				base = v_route[9]
-			if int(v_route[0]) in sent_ids:
-				btn_class = 'btn-success'
-				status = "Sent"
-			elif int(v_route[0]) in attempted_ids:
-				btn_class = 'btn-warning'
-				status = "Attempted"
-			else:
-				btn_class = 'btn-default'
-			routes.append(dict(id=v_route[0], routeType=v_route[1], rating=v_route[2], 
-				rope=v_route[3], name=v_route[4], dateSet=v_route[5], setter=v_route[6],
-				tape_div=gen_tape_div(base,v_route[7],v_route[8]), votes=v_route[12],btn_class=btn_class, status=status, voted=voted))
-			status = "Action"
-			
-	return render_template('comm.html', routes=routes)
+	return render_template('comm.html', routes=g.data['comm'])
 
 @app.route('/admin')
 def admin():
@@ -295,7 +251,7 @@ def comm_vote(route_id,page):
 	voted_ids = g.db.execute('select vote_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
 	voted_ids = [int(i) for i in voted_ids if i]
 	if not len(route_info) > 0:
-		g.db.execute("insert into route_comm values(?, 1);",[route_id])
+		g.db.execute("insert into route_comm values(?, 0);",[route_id])
 	if int(route_id) in voted_ids:
 		g.db.execute("update route_comm set num_votes = num_votes - 1 where route_id = ?;",[route_id])
 		route_id = str(route_id) + ', '

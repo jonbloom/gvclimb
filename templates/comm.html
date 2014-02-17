@@ -4,6 +4,8 @@
 {% endblock %}
 {% block body %}
 <a id="toprope"></a>
+
+{% if routes %}
 <h2>Routes Requested to be Removed</h2>
 <div class="table-responsive">
 	<table class="table">
@@ -27,15 +29,17 @@
 			<td>{{ route.dateSet }}</td>
 			<td>{{ route.setter }}</td>
 			<td>{{ route.tape_div|safe }}</td>
-			<td>{{ route.votes}}</td>
+			<td>{{ route.num_votes}}</td>
 			{% if session.logged_in %}
 			<td>{{ action_button(route.id,route.btn_class,route.status,'comm',route.voted) }}</td>
 			{% endif %}
 
 		</tr>
-		{% else %}
 		{% endfor %}
 	</table>
+{% else %}
+<h1>There have no routes that have been requested to be removed.</h1>
+{% endif %}
 </div>
 {% endblock %}
 {% block scripts %}
