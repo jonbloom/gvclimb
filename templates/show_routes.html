@@ -7,38 +7,7 @@
 {% block body %}
 <a id="toprope"></a>
 <h2>Top Rope</h2>
-<!--div class="table-responsive">
-	<table class="table tablesorter" id="table_toprope">
-		<thead>
-			<tr>
-				<th width="5%">Rating</th>
-				<th width="5%">Rope</th>
-				<th width="35%">Name</th><th width="10%">Date Set</th>
-				<th width="20%">Setter</th>
-				<th width="15%">Tape</th>
-				{% if session.logged_in %}
-				<th width="100px">Actions</th>
-				{% endif %}
-			</tr>
-		</thead>
-		<tbody>
-			{% for route in topropes %}
-			<tr>
-				<td><span class="r_sort">{{route.sort}}</span>{{ '5.' + route.rating }}</td>
-				<td>{{ route.rope }}</td>
-				<td>{{ route.name }}</td>
-				<td>{{ route.dateSet }}</td>
-				<td>{{ route.setter }}</td>
-				<td>{{ route.tape_div|safe }}</td>
-				{% if session.logged_in %}
-				<td>{{ action_button(route.id,route.btn_class,route.status,'home', route.voted) }}</td>
-				{% endif %}
-			</tr>
-			{% else %}
-			{% endfor %}
-		</tbody>
-	</table>
-</div-->
+
 {% for route in topropes %}
 			<div>
 				<div class="col-md-1"><span class="r_sort">{{route.sort}}</span>{{ '5.' + route.rating }}</div>
