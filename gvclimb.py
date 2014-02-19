@@ -13,6 +13,9 @@ PASSWORD = 'jb!gv5271'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
+class Route(object):
+	def __init__(self):
+		pass
 
 def connect_db():
 	return sqlite3.connect(app.config['DATABASE'])
@@ -263,6 +266,7 @@ def comm_vote(route_id,page):
 		
 	g.db.commit()
 	return redirect(url_for(page))
+
 @app.route('/comm/reset/<route_id>')
 def comm_reset(route_id):
 	require_admin()
@@ -320,6 +324,31 @@ def delete_setter(id):
 	g.db.execute("delete from setters where id = ?",[id])
 	g.db.commit()
 	return redirect(url_for('admin'))
+
+
+
+
+def gen_tape_div(base_color,color_1,color_2):
+	tape_div = "<div class='tape color {0}' style='background-color:{0}; height:100%;width:auto;margin:0 auto; padding:10px'>".format(base_color)
+      	if color_1 != 'none':
+      		if color_2 == 'none':
+      			tape_div =  tape_div + "<div class='color {0} fulltape' style='background-color:{0}; width:40%; height:20px; margin:0 auto;'></div>".format(color_1)
+      		else:
+      			tape_div = tape_div +  "<div class='color {0} halftape' style='background-color:{0}; width:40%; height:20px; margin:0 5%; float:left;'></div> \
+      			<div class='color {1} halftape' style='background-color:{1}; width:40%; height:20px; margin:0 5%; float:left;'></div>".format(color_1,color_2)
+      	tape_div = tape_div + "</div>"
+      	return str(tape_div)
+
+
+@app.route('/tape/<rating>/<special_base>/<color_1>/<color_2>')
+def tape_preview(rating,special_base,color_1,color_2):
+	colors = g.db.execute('select * from colors')
+	default_colors = colors.fetchone()
+	if special_base == "none":
+		base_color = default_colors[str(rating)]
+	else:  
+		base_color = special_base
+	return gen_tape_div(base_color,color_1,color_2)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -403,35 +432,6 @@ def require_logged_in():
 def require_admin():
 	if session.get('is_admin') == 0:
 		abort(401)
-
-
-def gen_tape_div(base_color,color_1,color_2):
-	tape_div = "<div class='tape color {0}' style='background-color:{0}; height:100%;width:auto;margin:0 auto; padding:10px'>".format(base_color)
-      	if color_1 != 'none':
-      		if color_2 == 'none':
-      			tape_div =  tape_div + "<div class='color {0} fulltape' style='background-color:{0}; width:40%; height:20px; margin:0 auto;'></div>".format(color_1)
-      		else:
-      			tape_div = tape_div +  "<div class='color {0} halftape' style='background-color:{0}; width:40%; height:20px; margin:0 5%; float:left;'></div> \
-      			<div class='color {1} halftape' style='background-color:{1}; width:40%; height:20px; margin:0 5%; float:left;'></div>".format(color_1,color_2)
-      	tape_div = tape_div + "</div>"
-      	return str(tape_div)
-
-
-@app.route('/tape/<rating>/<special_base>/<color_1>/<color_2>')
-def tape_preview(rating,special_base,color_1,color_2):
-	colors = g.db.execute('select * from colors')
-	default_colors = colors.fetchone()
-	if special_base == "none":
-		base_color = default_colors[str(rating)]
-	else:  
-		base_color = special_base
-	return gen_tape_div(base_color,color_1,color_2)
-
-@app.route('/test')
-def chart_data():
-	username = session['logged_in_as']
-	total_amounts = dict(g.db.execute("select r.rating, count(*) from routes as r join orderkeys as k on k.rating = r.rating group by r.rating order by k.key;").fetchall())
-	return str(total_amounts)
 
 
 if __name__ == '__main__':
