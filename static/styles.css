@@ -1,4 +1,4 @@
-body{
+	body{
 	background-color: #EEE;
     padding: 
     50px;
@@ -97,7 +97,7 @@ body{
 }
 @media (max-width: 767px){
 .visible-xs {
-display: inline-block!important;
+display: inline !important;
 }
 .hidden-xs {
 	display: none !important;
