@@ -13,10 +13,6 @@ PASSWORD = 'jb!gv5271'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-class Route(object):
-	def __init__(self):
-		pass
-
 def connect_db():
 	return sqlite3.connect(app.config['DATABASE'])
 
@@ -34,41 +30,18 @@ def teardown_request(exception):
 def get_data():
 	rtn = {'tr': [], 'b': [], 'sent': [], 'attempted': [], 'comm': []}
 	all_routes = g.db.execute('select r.*, k.key from routes as r join orderkeys as k on k.rating = r.rating order by k.key')
-	comm_routes = g.db.execute("select r.*, c.num_votes from routes r, route_comm c where r.id = c.route_id;").fetchall()
-	colors = g.db.execute('select * from colors')
-	default_colors = colors.fetchone()
+	comm_routes = g.db.execute("select route_id, count(route_id) from votes group by route_id").fetchall()
+	default_colors = g.db.execute('select * from colors').fetchone()
 	sent_ids = []
 	attempted_ids = []
 	user_voted_ids = []
 	if 'logged_in' in session and session['logged_in']:
-		attempted_ids = g.db.execute('select attempted_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-		sent_ids = g.db.execute('select sent_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-		user_voted_ids = g.db.execute('select vote_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-		attempted_ids = [int(i) for i in attempted_ids if i]
-		sent_ids = [int(i) for i in sent_ids if i]
-		user_voted_ids = [int(i) for i in user_voted_ids if i]
-	for row in comm_routes:
-		voted = str(False)
-		status = 'Actions'
-		btn_class = ''
-		if int(row[0]) in user_voted_ids:
-			voted = str(True)
-		if row[9] == "none":
-			base = default_colors[str(row[2])]
-		else:  
-			base = row[9]
-		if int(row[0]) in sent_ids:
-			btn_class = 'btn-success'
-			status = "Sent"
-		elif int(row[0]) in attempted_ids:
-			btn_class = 'btn-warning'
-			status = "Attempted"
-		else:
-			btn_class = 'btn-default'
-		if row[12] > 0:
-			rtn['comm'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
-				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status, voted=voted, num_votes=row[12]))
+		attempted_ids = g.db.execute('select route_id from attempts where username = ?', [session['logged_in_as']]).fetchall()
+		sent_ids = g.db.execute('select route_id from sends where username = ?', [session['logged_in_as']]).fetchall()
+		user_voted_ids = g.db.execute('select route_id from votes where username = ?', [session['logged_in_as']]).fetchall()
+		attempted_ids = [int(i[0]) for i in attempted_ids if i]
+		sent_ids = [int(i[0]) for i in sent_ids if i]
+		user_voted_ids = [int(i[0]) for i in user_voted_ids if i]
 	for row in all_routes:
 		voted = str(False)
 		status = 'Actions'
@@ -206,8 +179,7 @@ def edit(route_id):
 @app.route('/attempt/<route_id>/<page>')
 def attempt(route_id,page):
 	require_logged_in()
-	route_id = str(route_id) + ', '
-	g.db.execute("update users set attempted_ids = (attempted_ids || '{0}') where username = '{1}'".format(route_id,session.get('logged_in_as')))
+	g.db.execute("insert into attempts values(?,?);",[route_id,session.get('logged_in_as')])
 	g.db.commit()
 	return redirect(url_for(page))
 
@@ -216,7 +188,7 @@ def attempt(route_id,page):
 def unatttempt(route_id,page):
 	require_logged_in()
 	route_id = str(route_id) + ', '
-	g.db.execute("update users set attempted_ids = replace(attempted_ids,'{0}','') where username = '{1}'".format(route_id, session.get('logged_in_as')))
+	g.db.execute("delete from attempts where route_id = ? and username = ?;",[route_id,session.get('logged_in_as')])
 	g.db.commit()
 	return redirect(url_for(page))
 
@@ -224,9 +196,7 @@ def unatttempt(route_id,page):
 @app.route('/send/<route_id>/<page>')
 def send(route_id,page):
 	require_logged_in()
-	route_id = str(route_id) + ', '
-	g.db.execute("update users set sent_ids = (sent_ids || '{0}') where username = '{1}'".format(route_id,session.get('logged_in_as')))
-	g.db.execute("update users set attempted_ids = (attempted_ids || '{0}') where username = '{1}'".format(route_id,session.get('logged_in_as')))
+	g.db.execute("insert into sends values(?,?);",[route_id,session.get('logged_in_as')])
 	g.db.commit()
 	return redirect(url_for(page))
 
@@ -234,13 +204,12 @@ def send(route_id,page):
 @app.route('/unsend/<route_id>/<page>')
 def unsend(route_id,page):
 	require_logged_in()
-	route_id = str(route_id) + ', '
-	g.db.execute("update users set sent_ids = replace(sent_ids,'{0}','') where username = '{1}'".format(route_id, session.get('logged_in_as')))
+	g.db.execute("delete from sends where route_id = ? and username = ?;",[route_id,session.get('logged_in_as')])
 	g.db.commit()
 	return redirect(url_for(page))
 
 @app.route('/delete/<route_id>/<page>')
-def delete(route_id):
+def delete(route_id,page):
 	require_logged_in()
 	require_admin()
 	g.db.execute("delete from routes where id = ?",[route_id])
@@ -250,20 +219,7 @@ def delete(route_id):
 @app.route('/comm/vote/<route_id>/<page>')
 def comm_vote(route_id,page):
 	require_logged_in()
-	route_info = g.db.execute("select * from route_comm where route_id = ?;",[route_id]).fetchall();
-	voted_ids = g.db.execute('select vote_ids from users where username = ?', [session['logged_in_as']]).fetchone()[0].split(', ')
-	voted_ids = [int(i) for i in voted_ids if i]
-	if not len(route_info) > 0:
-		g.db.execute("insert into route_comm values(?, 0);",[route_id])
-	if int(route_id) in voted_ids:
-		g.db.execute("update route_comm set num_votes = num_votes - 1 where route_id = ?;",[route_id])
-		route_id = str(route_id) + ', '
-		g.db.execute("update users set vote_ids = replace(vote_ids,'{0}','') where username = '{1}'".format(route_id, session.get('logged_in_as')))
-	else:
-		g.db.execute("update route_comm set num_votes = num_votes + 1 where route_id = ?;",[route_id])
-		route_id = str(route_id) + ', '
-		g.db.execute("update users set vote_ids = (vote_ids || '{0}') where username = '{1}'".format(route_id,session.get('logged_in_as')))
-		
+	g.db.execute("insert into votes values(?,?);",[route_id,session.get('logged_in_as')])
 	g.db.commit()
 	return redirect(url_for(page))
 
@@ -435,4 +391,4 @@ def require_admin():
 
 
 if __name__ == '__main__':
-		app.run()
+		app.run(host='0.0.0.0',port=80)
