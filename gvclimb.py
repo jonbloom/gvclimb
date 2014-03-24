@@ -5,7 +5,7 @@ abort, render_template, flash
 
 # configuration
 DATABASE = 'gvclimb.sqlite'
-DEBUG = False
+DEBUG = True
 
 app = Flask(__name__)
 app.config.from_object(__name__)
