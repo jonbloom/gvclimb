@@ -1,40 +1,116 @@
 {% extends "base.html" %}
-
-
 {% block title %}Home{% endblock %}
 {% block head %}
 {% endblock %}
 {% block body %}
 <a id="toprope"></a>
 <h2>Top Rope</h2>
-<div class="hidden-xs col-md-12">
-				<div class="col-md-1"><h3>Rating</h3></div>
-				<div class="col-md-1"><h3>Rope</h3></div>
-				<div class="col-md-3"><h3>Name</h3></div>
-				<div class="col-md-1"><h3>Date Set</h3></div>
-				<div class="col-md-2"><h3>Rotue Setter</h3></div>
-				<div class="col-md-2"><h3>Tape</h3></div>
+<div class="tablesorter hidden-xs">
+	<table class="table tablesorter" id="table_boulder">
+		<thead>
+			<tr>
+				<th width="5%">Rating</th>
+				<th width="5%">Rope</th>
+				<th width="35%">Name</th>
+				<th width="10%">Date Set</th>
+				<th width="20%">Setter</th>
+				<th width="15%">Tape</th>
 				{% if session.logged_in %}
-				<div class="col-md-2"><h3>Actions</h3></div>
+				<th width="100px">Actions</th>
 				{% endif %}
-			</div>
+			</tr>
+		</thead>
+		<tbody>
+			{% for route in topropes %}
+			<tr>
+				<td><span class="r_sort">{{route.sort}}</span>5.{{ route.rating }}</td>
+				<td>{{ route.rope }}</td>
+				<td>{{ route.name }}</td>
+				<td>{{ route.dateSet }}</td>
+				<td>{{ route.setter }}</td>
+				<td>{{ route.tape_div|safe }}</td>
+				{% if session.logged_in %}
+				<td>{{ action_button(route.id,route.btn_class,route.status,'home', route.voted) }}</td>
+				{% endif %}
+			</tr>
+			{% else %}
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+<div class="visible-xs">
+<div class="row">
 {% for route in topropes %}
-			<div class="col-md-12">
-				<div class="col-md-1"><span class="visible-xs">Rating: &nbsp;</span><span class="r_sort">{{route.sort}}</span>{{ '5.' + route.rating }}</div>
-				<div class="col-md-1"><span class="visible-xs">Rope: &nbsp;</span>{{ route.rope }}</div>
-				<div class="col-md-3">{{ route.name }}</div>
-				<div class="col-md-1">{{ route.dateSet }}</div>
-				<div class="col-md-2"><span class="visible-xs">Setter: &nbsp;</span>{{ route.setter }}</div>
-				<div class="col-md-2">{{ route.tape_div|safe }}</div>
-				{% if session.logged_in %}
-				<div class="col-md-2">{{ action_button(route.id,route.btn_class,route.status,'home', route.voted) }}</div>
-				{% endif %}
-			</div>
-			<hr>
+<div class="col-md-3">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{ route.name }}</h3>
+		</div>
+		<div class="panel-body">
+				<p>Rating: <span class="pull-right">{{ '5.' + route.rating }}</span></p>
+				<hr>
+				<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
+				<hr>
+				<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+				<hr>
+				<p>Setter: <span class="pull-right">{{route.setter }}</p>
+				<hr>
+				<p>{{ route.tape_div|safe }}</p>
+		</div>
+		{% if session.logged_in %}
+		<div class="panel-footer">
+			{{ action_button(route.id,route.btn_class,route.status,'home', route.voted) }}
+		</div>
+		{% endif %}
+	</div>
+</div>
+{% if loop.index is divisibleby 4 %}
+</div>
+<div class="row">
+{% endif %}
 {% endfor %}
+</div>
+</div>
 <a id="boulder"></a>
 <h2>Boulder</h2>
-<div class="table-responsive tablesorter">
+
+<div class="visible-xs">
+<div class="row">
+{% for route in boulders %}
+<div class="col-md-3">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{ route.name }}</h3>
+		</div>
+		<div class="panel-body">
+				<p>Rating: <span class="pull-right">{{route.rating }}</span></p>
+				<hr>
+				<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
+				<hr>
+				<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+				<hr>
+				<p>Setter: <span class="pull-right">{{route.setter }}</p>
+				<hr>
+				<p>{{ route.tape_div|safe }}</p>
+		</div>
+		{% if session.logged_in %}
+		<div class="panel-footer">
+			{{ action_button(route.id,route.btn_class,route.status,'home', route.voted) }}
+		</div>
+		{% endif %}
+	</div>
+</div>
+{% if loop.index is divisibleby 4 %}
+</div>
+<div class="row">
+{% endif %}
+{% endfor %}
+</div>
+</div>
+
+
+<div class="tablesorter hidden-xs">
 	<table class="table tablesorter" id="table_boulder">
 		<thead>
 			<tr>
@@ -70,10 +146,10 @@
 {% endblock %}
 {% block scripts %}
 $(document).ready(function() 
-    { 
-        $("#table_toprope").tablesorter(); 
-        $("#table_boulder").tablesorter(); 
-    } 
+{ 
+	$("#table_toprope").tablesorter(); 
+	$("#table_boulder").tablesorter(); 
+} 
 ); 
 if ( $.cookie("scroll") !== null )
 {
