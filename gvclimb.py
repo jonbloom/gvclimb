@@ -6,7 +6,9 @@ abort, render_template, flash
 # configuration
 DATABASE = 'gvclimb.sqlite'
 DEBUG = True
-
+SECRET_KEY = 'secret'
+USERNAME = 'jonbloom'
+PASSWORD = 'password'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
