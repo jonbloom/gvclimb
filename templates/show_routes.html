@@ -3,6 +3,7 @@
 {% block head %}
 {% endblock %}
 {% block body %}
+{% if topropes %}
 <a id="toprope"></a>
 <h2>Top Rope</h2>
 <div class="tablesorter hidden-xs">
@@ -72,6 +73,8 @@
 {% endfor %}
 </div>
 </div>
+{% endif %}
+{% if boulders %}
 <a id="boulder"></a>
 <h2>Boulder</h2>
 
@@ -143,6 +146,7 @@
 		</tbody>
 	</table>
 </div>
+{% endif %}
 {% endblock %}
 {% block scripts %}
 $(document).ready(function() 
