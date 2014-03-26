@@ -20,6 +20,8 @@ def before_request():
 	g.db = connect_db()
 	g.db.row_factory = sqlite3.Row
 	g.data = get_data()
+	if 'logged_in' in session and session['logged_in']:
+		g.username = session['logged_in_as']
 @app.teardown_request
 def teardown_request(exception):
 	db = getattr(g, 'db', None)
@@ -35,9 +37,9 @@ def get_data():
 	attempted_ids = []
 	user_voted_ids = []
 	if 'logged_in' in session and session['logged_in']:
-		attempted_ids = g.db.execute('select route_id from attempts where username = ?', [session['logged_in_as']]).fetchall()
-		sent_ids = g.db.execute('select route_id from sends where username = ?', [session['logged_in_as']]).fetchall()
-		user_voted_ids = g.db.execute('select route_id from votes where username = ?', [session['logged_in_as']]).fetchall()
+		attempted_ids = g.db.execute('select route_id from attempts where username = ?', [g.username]).fetchall()
+		sent_ids = g.db.execute('select route_id from sends where username = ?', [g.username]).fetchall()
+		user_voted_ids = g.db.execute('select route_id from votes where username = ?', [g.username]).fetchall()
 		attempted_ids = [int(i[0]) for i in attempted_ids if i]
 		sent_ids = [int(i[0]) for i in sent_ids if i]
 		user_voted_ids = [int(i[0]) for i in user_voted_ids if i]
@@ -240,8 +242,6 @@ def comm_reset(route_id):
 def update_colors():
 	require_logged_in()
 	require_admin()
-	default_colors = g.db.execute('select * from colors')
-	default_colors = dict(default_colors.fetchone())
 	c_V0 = request.form['V0']
 	c_V1 = request.form['V1']
 	c_V2 = request.form['V2']
@@ -253,7 +253,7 @@ def update_colors():
 	c_V8 = request.form['V8']
 
 	g.db.execute("update colors set '7' = '{}', '8' = '{}', '9' = '{}', '10a' = '{}', '10b' = '{}', '10c' = '{}', '10d' = '{}',  \
-		'11a' = '{}', '11b' = '{}', '11c' = '{}', '12d' = '{}', \
+		'11a' = '{}', '11b' = '{}', '11c' = '{}', '11d' = '{}', \
 		'12a' = '{}', '12b' = '{}', '12c' = '{}', '12d' = '{}', \
 		'V0' = '{}', 'V1' = '{}', 'V2' = '{}', 'V3' = '{}', 'V4' = '{}', \
 		'V5' = '{}', 'V6' = '{}', 'V7' = '{}', 'V8' = '{}'".format(
@@ -373,7 +373,7 @@ def custom_401(error):
 	return render_template('error.html',error=error,message=message,code=401), 401
 @app.errorhandler(404)
 def custom_404(error):
-	message = "WHatever you were looking for does not exist."
+	message = "Whatever you were looking for does not exist."
 	return render_template('error.html',error=error, message=message,code=404), 404
 @app.errorhandler(405)
 def custom_405(error):
