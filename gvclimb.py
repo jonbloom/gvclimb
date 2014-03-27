@@ -236,7 +236,7 @@ def comm_reset(route_id):
 
 
 
-@app.route('/update_colors', methods=['GET', 'POST'])
+@app.route('/update_colors', methods=['POST'])
 def update_colors():
 	require_logged_in()
 	require_admin()
@@ -396,4 +396,4 @@ def require_admin():
 
 
 if __name__ == '__main__':
-		app.run(host='0.0.0.0',port=8080)
+		app.run(port=8001)
