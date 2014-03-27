@@ -252,13 +252,19 @@ def update_colors():
 	c_V7 = request.form['V7']
 	c_V8 = request.form['V8']
 
-	g.db.execute("update colors set '7' = '{}', '8' = '{}', '9' = '{}', '10a' = '{}', '10b' = '{}', '10c' = '{}', '10d' = '{}',  \
-		'11a' = '{}', '11b' = '{}', '11c' = '{}', '11d' = '{}', \
-		'12a' = '{}', '12b' = '{}', '12c' = '{}', '12d' = '{}', \
-		'V0' = '{}', 'V1' = '{}', 'V2' = '{}', 'V3' = '{}', 'V4' = '{}', \
-		'V5' = '{}', 'V6' = '{}', 'V7' = '{}', 'V8' = '{}'".format(
-		c_V0, c_V1, c_V2, c_V3, c_V3, c_V4, c_V4, c_V5, c_V5, c_V6, c_V6, c_V7, c_V7, c_V8, c_V8, 
-		c_V0, c_V1, c_V2, c_V3, c_V4, c_V5, c_V6, c_V7, c_V8))
+	g.db.execute("update colors set '7' = '?', '8' = '?', '9' = '?', \
+		'10a' = '?', '10b' = '?', '10c' = '?', '10d' = '?',  \
+		'11a' = '?', '11b' = '?', '11c' = '?', '11d' = '?', \
+		'12a' = '?', '12b' = '?', '12c' = '?', '12d' = '?', \
+		'V0' = '?', 'V1' = '?', 'V2' = '?', 'V3' = '?', 'V4' = '?', \
+		'V5' = '?', 'V6' = '?', 'V7' = '?', 'V8' = '?';",[c_V0,c_V1,c_V2,
+		c_V3, c_V3,
+		c_V4, c_V4,
+		c_V5, c_V5,
+		c_V6, c_V6,
+		c_V7, c_V7,
+		c_V8, c_V8,
+		c_V0, c_V1, c_V2, c_V3, c_V4, c_V5, c_V6, c_V7, c_V8])
 	g.db.commit()
 	return redirect(url_for('admin'))
 
@@ -367,10 +373,16 @@ def logout():
     session.pop('is_admin', None)
     return redirect(url_for('home'))
 
+@app.errorhandler(400)
+def custom_400(error):
+	message = "There's really no reason for you to see this page."
+	return render_template('error.html',error=error,message=message,code=400), 400
+
 @app.errorhandler(401)
 def custom_401(error):
 	message = "You are attempting to access a restricted area."
 	return render_template('error.html',error=error,message=message,code=401), 401
+
 @app.errorhandler(404)
 def custom_404(error):
 	message = "Whatever you were looking for does not exist."
