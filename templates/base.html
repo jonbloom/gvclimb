@@ -28,11 +28,11 @@
         </li>
         {% if voted == "True" %}
         <li>
-            <a href="/comm/vote/{{id}}/{{page}}"><span class="red glyphicon glyphicon-thumbs-down"></span>&nbsp;Unrequest Removal</a>
+            <a href="/comm/vote/{{id}}/{{page}}"><span class="red glyphicon glyphicon-thumbs-up"></span>&nbsp;Unrequest Removal</a>
         </li>
         {% else %}
         <li>
-            <a href="/comm/vote/{{id}}/{{page}}"><span class="green glyphicon glyphicon-thumbs-up"></span>&nbsp;Request Removal</a>
+            <a href="/comm/vote/{{id}}/{{page}}"><span class="green glyphicon glyphicon-thumbs-down"></span>&nbsp;Request Removal</a>
         </li>
         {% endif %} {% if session.is_admin %}
         <li class="divider">
