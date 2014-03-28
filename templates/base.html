@@ -109,7 +109,7 @@
                     {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <!--li {% if request.path=="/comm" %} class="active" {%endif%}>
+                    <li {% if request.path=="/comm" %} class="active" {%endif%}>
                         <a href="{{url_for('comm')}}" alt="Route Comm." title="Route Comm.">
                             <span class="glyphicon glyphicon-thumbs-up">
         </span>
@@ -120,7 +120,7 @@
                             <span class="hidden-xs" style="inline-block">Route Comm.</span>
                             {%endif%}
                         </a>
-                    </li-->
+                    </li>
                     {% if session.logged_in %} {% if session.is_admin %}
                     <li {% if request.path=="/add" %} class="active" {%endif%}>
                         <a href="{{url_for('add')}}" alt="Add Route" title="Add Route">
