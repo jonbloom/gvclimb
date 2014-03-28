@@ -2,3 +2,5 @@
 *.sqlite
 
 gvclimb.sqlite
+
+*.sqlite
