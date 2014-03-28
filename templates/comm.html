@@ -23,7 +23,8 @@
 		</tr>
 		{% for route in routes %}
 		<tr>
-			<td>{{ '5.' + route.rating }}</td>
+			{% if route.route_type == 'toprope' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
+			{% if route.route_type == 'boulder' %}<td> {{route.rating }}</td>{% endif %}
 			<td>{{ route.rope }}</td>
 			<td>{{ route.name }}</td>
 			<td>{{ route.dateSet }}</td>

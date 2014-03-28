@@ -29,7 +29,7 @@ def teardown_request(exception):
 def get_data():
 	rtn = {'tr': [], 'b': [], 'sent': [], 'attempted': [], 'comm': []}
 	all_routes = g.db.execute('select r.*, k.key from routes as r join orderkeys as k on k.rating = r.rating order by k.key')
-	comm_routes = g.db.execute("select route_id, count(route_id) from votes group by route_id").fetchall()
+	comm_routes = dict(g.db.execute("select route_id, count(route_id) from votes group by route_id").fetchall())
 	default_colors = g.db.execute('select * from colors').fetchone()
 	sent_ids = []
 	attempted_ids = []
@@ -54,25 +54,29 @@ def get_data():
 		if int(row[0]) in sent_ids:
 			btn_class = 'btn-success'
 			status = "Sent"
-			rtn['sent'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
+			rtn['sent'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
 				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status, voted=voted))
 		elif int(row[0]) in attempted_ids:
 			btn_class = 'btn-warning'
 			status = "Attempted"
-			rtn['attempted'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
+			rtn['attempted'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
 				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status, voted=voted))
 		else:
 			btn_class = 'btn-default'
 		if row[1] == "toprope":
-			rtn['tr'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
+			rtn['tr'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
 				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
 		else:
-			rtn['b'].append(dict(id=row[0], routeType=row[1], rating=row[2], 
+			rtn['b'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
 				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
+		if int(row[0] in comm_routes.keys()):
+			rtn['comm'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
+				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted, num_votes=comm_routes[row[0]]))
 	return rtn
 		
 
