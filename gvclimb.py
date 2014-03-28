@@ -93,7 +93,7 @@ def profile():
 
 @app.route('/comm')
 def comm():
-	return render_template('comm.html', routes=g.data['comm'])
+	return g.data['comm']
 
 @app.route('/admin')
 def admin():
