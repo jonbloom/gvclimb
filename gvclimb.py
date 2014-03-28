@@ -223,7 +223,7 @@ def comm_vote(route_id,page):
 	return redirect(url_for(page))
 
 @app.route('/comm/unvote/<route_id>/<page>')
-def comm_vote(route_id,page):
+def comm_unvote(route_id,page):
 	require_logged_in()
 	g.db.execute("delete from votes where route_id = ? and username = ?;",[route_id,session.get('logged_in_as')])
 	g.db.commit()
