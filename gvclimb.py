@@ -186,7 +186,6 @@ def attempt(route_id,page):
 @app.route('/unattempt/<route_id>/<page>')
 def unatttempt(route_id,page):
 	require_logged_in()
-	route_id = str(route_id) + ', '
 	g.db.execute("delete from attempts where route_id = ? and username = ?;",[route_id,session.get('logged_in_as')])
 	g.db.commit()
 	return redirect(url_for(page))
@@ -212,7 +211,6 @@ def delete(route_id,page):
 	require_logged_in()
 	require_admin()
 	g.db.execute("delete from routes where id = ?",[route_id])
-	g.db.commit()
 	return redirect(url_for(page))
 
 @app.route('/comm/vote/<route_id>/<page>')
@@ -225,7 +223,7 @@ def comm_vote(route_id,page):
 @app.route('/comm/unvote/<route_id>/<page>')
 def comm_unvote(route_id,page):
 	require_logged_in()
-	g.db.execute("delete from votes where route_id = ? and username = ?;",[route_id,session.get('logged_in_as')])
+	g.db.execute("delete from votes where username = ? and route_id = ?;",[session.get('logged_in_as'),route_id])
 	g.db.commit()
 	return redirect(url_for(page))
 
@@ -246,7 +244,14 @@ def update_colors():
 	c_V7 = request.form['V7']
 	c_V8 = request.form['V8']
 
-	g.db.execute("update colors set '7' = ?, '8' = ?, '9' = ?, '10a' = ?, '10b' = ?, '10c' = ?, '10d' = ?, '11a' = ?, '11b' = ?, '11c' = ?, '11d' = ?, '12a' = ?, '12b' = ?, '12c' = ?, '12d' = ?, 'V0' = ?, 'V1' = ?, 'V2' = ?, 'V3' = ?, 'V4' = ?, 'V5' = ?, 'V6' = ?, 'V7' = ?, 'V8' = ?;",[c_V0,c_V1,c_V2,
+	g.db.execute("""
+		update colors
+		set '7' = ?, '8' = ?, '9' = ?, 
+		'10a' = ?, '10b' = ?, '10c' = ?, '10d' = ?, 
+		'11a' = ?, '11b' = ?, '11c' = ?, '11d' = ?, 
+		'12a' = ?, '12b' = ?, '12c' = ?, '12d' = ?, 
+		'V0' = ?, 'V1' = ?, 'V2' = ?, 'V3' = ?, 'V4' = ?, 'V5' = ?, 'V6' = ?, 'V7' = ?, 'V8' = ?;""",
+		[c_V0,c_V1,c_V2,
 		c_V3, c_V3,
 		c_V4, c_V4,
 		c_V5, c_V5,
