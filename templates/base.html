@@ -7,41 +7,41 @@
     <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
         {% if status == "Sent" %}
         <li>
-            <a href="/unsend/{{id}}/{{page}}">Unmark Sent</a>
+            <a href="/unsend/{{id}}/{{page}}"><span class="green glyphicon glyphicon-ok"></span>&nbsp;Unmark Sent</a>
         </li>
         {% elif status == "Attempted" %}
         <li>
-            <a href="/send/{{id}}/{{page}}">Mark Sent</a>
+            <a href="/send/{{id}}/{{page}}"><span class="green glyphicon glyphicon-ok"></span>&nbsp;Mark Sent</a>
         </li>
         <li>
-            <a href="/unattempt/{{id}}/{{page}}">Unmark Attempted</a>
+            <a href="/unattempt/{{id}}/{{page}}"><span class="yellow glyphicon glyphicon-ok"></span>&nbsp;Unmark Attempted</a>
         </li>
         {% else %}
         <li>
-            <a href="/send/{{id}}/{{page}}">Mark Sent</a>
+            <a href="/send/{{id}}/{{page}}"><span class="green glyphicon glyphicon-ok"></span>&nbsp;Mark Sent</a>
         </li>
         <li>
-            <a href="/attempt/{{id}}/{{page}}">Mark Attempted</a>
+            <a href="/attempt/{{id}}/{{page}}"><span class="yellow glyphicon glyphicon-ok"></span>&nbsp;Mark Attempted</a>
         </li>
         {% endif %}
         <li class="divider">
         </li>
         {% if voted == "True" %}
         <li>
-            <a href="/comm/vote/{{id}}/{{page}}">Unrequest Removal</a>
+            <a href="/comm/vote/{{id}}/{{page}}"><span class="red glyphicon glyphicon-thumbs-down"></span>&nbsp;Unrequest Removal</a>
         </li>
         {% else %}
         <li>
-            <a href="/comm/vote/{{id}}/{{page}}">Request Removal</a>
+            <a href="/comm/vote/{{id}}/{{page}}"><span class="green glyphicon glyphicon-thumbs-up"></span>&nbsp;Request Removal</a>
         </li>
         {% endif %} {% if session.is_admin %}
         <li class="divider">
         </li>
         <li>
-            <a href="/edit/{{id}}">Edit Route</a>
+            <a href="/edit/{{id}}"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit Route</a>
         </li>
         <li>
-            <a href="/delete/{{id}}/{{page}}">Delete Route</a>
+            <a href="/delete/{{id}}/{{page}}"><span class="red glyphicon glyphicon-remove"></span>&nbsp;Delete Route</a>
         </li>
         {% endif %}
     </ul>

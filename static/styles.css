@@ -65,6 +65,15 @@
 .r_sort{
 	display:none;
 }
+.green{
+	color: #5cb85c;
+}
+.yellow{
+	color: #f0ad4e;
+}
+.red{
+	color: #fcf2f2;
+}
 .bs-callout {
   margin: 20px 0;
   padding: 15px 30px 15px 15px;
