@@ -55,6 +55,9 @@
 .greensquiggles{
 	background:url(tapes/greensquiggles.jpg) repeat-x;
 }
+.gummy{
+	background:url(tapes/gummy.jpg) repeat-x;
+}
 .color{
 	border: 1px solid #ccc;
 	border-radius: 4px;
