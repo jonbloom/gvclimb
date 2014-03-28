@@ -58,6 +58,9 @@
 .gummy{
 	background:url(tapes/gummy.jpg) repeat-x;
 }
+.owls{
+	background: url(tapes/owls.jpg) repeat-x;
+}
 .color{
 	border: 1px solid #ccc;
 	border-radius: 4px;
