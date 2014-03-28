@@ -222,18 +222,12 @@ def comm_vote(route_id,page):
 	g.db.commit()
 	return redirect(url_for(page))
 
-@app.route('/comm/reset/<route_id>')
-def comm_reset(route_id):
-	require_admin()
-	route_info = g.db.execute("select * from route_comm where route_id = ?;",[route_id]).fetchall();
-	if len(route_info) > 0:
-		g.db.execute("update route_comm set num_votes = 0 where route_id = ?;",[route_id])
-		g.db.commit()
-	else:
-		g.db.execute("insert into route_comm values(?, 0);",[route_id])
-		g.db.commit()
-	return redirect(url_for('comm'))
-
+@app.route('/comm/unvote/<route_id>/<page>')
+def comm_vote(route_id,page):
+	require_logged_in()
+	g.db.execute("delete from votes where route_id = ? and username = ?;",[route_id,session.get('logged_in_as')])
+	g.db.commit()
+	return redirect(url_for(page))
 
 
 @app.route('/update_colors', methods=['POST'])

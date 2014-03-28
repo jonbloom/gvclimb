@@ -32,7 +32,7 @@
         </li>
         {% else %}
         <li>
-            <a href="/comm/vote/{{id}}/{{page}}"><span class="green glyphicon glyphicon-thumbs-down"></span>&nbsp;Request Removal</a>
+            <a href="/comm/unvote/{{id}}/{{page}}"><span class="green glyphicon glyphicon-thumbs-down"></span>&nbsp;Request Removal</a>
         </li>
         {% endif %} {% if session.is_admin %}
         <li class="divider">
