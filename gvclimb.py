@@ -231,6 +231,14 @@ def comm_unvote(route_id,page):
 	g.db.commit()
 	return redirect(url_for(page))
 
+@app.route('/rate', methods=['POST'])
+def rate():
+	require_logged_in()
+	route_id = request.form['route_id']
+	rating = request.form['rating']
+	g.db.execute('insert into star_rating values(?,?,?);',[route_id,session.get('logged_in_as'),rating])
+	g.db.commit()
+
 
 @app.route('/update_colors', methods=['POST'])
 def update_colors():
@@ -281,6 +289,24 @@ def delete_setter(id):
 	require_logged_in()
 	require_admin()
 	g.db.execute("delete from setters where id = ?",[id])
+	g.db.commit()
+	return redirect(url_for('admin'))
+
+
+
+@app.route('/adminify/<id>')
+def adminify(id):
+	require_logged_in()
+	require_admin()
+	g.db.execute("update users set is_admin = 1 where id = ?",[id])
+	g.db.commit()
+	return redirect(url_for('admin'))
+
+@app.route('/deadminify/<id>')
+def deadminify(id):
+	require_logged_in()
+	require_admin()
+	g.db.execute("update users set is_admin = 0 where id = ?",[id])
 	g.db.commit()
 	return redirect(url_for('admin'))
 

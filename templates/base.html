@@ -26,6 +26,9 @@
         {% endif %}
         <li class="divider">
         </li>
+        <li>
+            <div data-routeid="{{id}}" class="rateit"></div>
+        </li>
         {% if voted == "True" %}
         <li>
             <a href="/comm/unvote/{{id}}/{{page}}"><span class="green glyphicon glyphicon-thumbs-up"></span>&nbsp;Unrequest Removal</a>
@@ -57,8 +60,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %} - GV Climb</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/cosmo/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
     <link rel="stylesheet" href="{{url_for('static',filename='jdpicker.css')}}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{{url_for('static',filename='tablesorter_styles.css')}}" type="text/css" media="screen" />
     <style type="text/css">
@@ -222,7 +226,7 @@
     <script type="text/javascript" src="{{url_for('static',filename='jquery.tablesorter.min.js')}}"></script>
     <script type="text/javascript">
     if ($(".action").length > 6) {
-        $(".action").slice(-2).addClass("dropup");
+        $(".action").slice(-4).addClass("dropup");
     }
     </script>
     <script type="text/javascript">
