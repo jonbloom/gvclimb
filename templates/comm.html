@@ -3,78 +3,92 @@
 {% block head %}
 {% endblock %}
 {% block body %}
-<a id="toprope"></a>
-
 {% if routes %}
-<h2>Routes Requested to be Removed</h2>
-<div class="hidden-xs">
-	<table class="table">
-		<tr>
-			<th width="5%">Rating</th>
-			<th width="5%">Rope</th>
-			<th width="30%">Name</th><th width="10%">Date Set</th>
-			<th width="20%">Setter</th>
-			<th width="15%">Tape</th>
-			<th width="5%">Votes</th>
-			{% if session.logged_in %}
-			<th width="100px">Actions</th>
-			{% endif %}
+<h2>Routes Requested to be Removed <small class="visible-xs">Tap to expand</small></h2>
+<div class="tablesorter hidden-xs">
+	<table class="table" id="table_comm">
+		<thead>
+			<tr>
+				<th width="5%">Rating</th>
+				<th width="5%">Rope</th>
+				<th width="30%">Name</th><th width="10%">Date Set</th>
+				<th width="20%">Setter</th>
+				<th width="15%">Tape</th>
+				<th width="5%">Votes</th>
+				{% if session.logged_in %}
+				<th width="100px">Actions</th>
+				{% endif %}
 
-		</tr>
-		{% for route in routes %}
-		<tr>
-			{% if route.route_type == 'toprope' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
-			{% if route.route_type == 'boulder' %}<td> {{route.rating }}</td>{% endif %}
-			<td>{{ route.rope }}</td>
-			<td>{{ route.name }}</td>
-			<td>{{ route.dateSet }}</td>
-			<td>{{ route.setter }}</td>
-			<td>{{ route.tape_div|safe }}</td>
-			<td>{{ route.num_votes}}</td>
-			{% if session.logged_in %}
-			<td>{{ action_button(route.id,route.btn_class,route.status,'comm',route.voted) }}</td>
-			{% endif %}
-
-		</tr>
-		{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for route in routes %}
+			<tr>
+				{% if route.route_type == 'toprope' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
+				{% if route.route_type == 'boulder' %}<td> {{route.rating }}</td>{% endif %}
+				<td>{{ route.rope }}</td>
+				<td>{{ route.name }}</td>
+				<td>{{ route.dateSet }}</td>
+				<td>{{ route.setter }}</td>
+				<td>{{ route.tape_div|safe }}</td>
+				<td>{{ route.num_votes}}</td>
+				{% if session.logged_in %}
+				<td>{{ action_button(route.id,route.btn_class,route.status,'comm',route.voted) }}</td>
+				{% endif %}
+			</tr>
+			{% endfor %}
+		</tbody>
 	</table>
 </div>
-<div class="visible-xs">
-<div class="row">
-{% for route in routes %}
-<div class="col-md-3">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">{{ route.name }}</h3>
+<div class="visible-xs panel-group" id="comm">
+	{% if session.logged_in %}
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading" style="text-align: center;">
+				<i class="fa fa-lg fa-fw green fa-check-circle"></i><small>Send</small>
+				<i class="fa fa-lg fa-fw yellow fa-check-circle"></i><small>Attempt</small>
+				<i class="fa fa-lg fa-fw red fa-thumbs-o-down"></i><small>Request Removal</small>
+				{% if session.is_admin %}
+				<br>
+				<i class="fa fa-lg fa-fw fa-pencil" style="color: #007fff"></i><small>Edit</small>
+				<i class="fa fa-lg fa-fw fa-times red"></i><small>Delete</small>
+				{% endif %}
+			</div>
 
 		</div>
-		<div class="panel-body">
+	</div>
+	<br>
+	{% endif %}
+	{% for route in routes %}
+	<div class="col-md-3">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title" data-toggle="collapse" data-parent="#comm" href="#route_{{route.id}}">
+					{{ route.name }}
+			</h3>
+		</div>
+		<div id="route_{{route.id}}" class="panel-collapse collapse">
+			<div class="panel-body">
 				<p>{{ route.tape_div|safe }}</p>
 				<hr>
 				<p>Rating: <span class="pull-right">{% if route.route_type == 'toprope' %}{{ '5.' + route.rating }}{% endif %}
-			{% if route.route_type == 'boulder' %}{{route.rating }}{% endif %}</span></p>
-				<hr>
-				<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
-				<hr>
-				<p>Date: <span class="pull-right">{{route.dateSet }}</p>
-				<hr>
-				<p>Setter: <span class="pull-right">{{route.setter }}</p>
-				<hr>
-				<p>Votes: <span class="pull-right">{{route.num_votes }}</p>
+					{% if route.route_type == 'boulder' %}{{route.rating }}{% endif %}</span></p>
+					<hr>
+					<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
+					<hr>
+					<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+					<hr>
+					<p>Setter: <span class="pull-right">{{route.setter }}</p>
+
+				</div>
+			</div>
+			
+			<div class="panel-footer">
+				{{route.rating}}, Rope {{route.rope}}{% if session.logged_in %}<span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}{% endif %}</span>
+			</div>
 		</div>
-		{% if session.logged_in %}
-		<div class="panel-footer">
-			{{route.status}} <span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}</span>
-		</div>
-		{% endif %}
 	</div>
-</div>
-{% if loop.index is divisibleby 4 %}
-</div>
-<div class="row">
-{% endif %}
-{% endfor %}
-</div>
+	{% endfor %}
 </div>
 {% else %}
 <h1>There have no routes that have been requested to be removed.</h1>
@@ -83,11 +97,11 @@
 {% endblock %}
 {% block scripts %}
 if ( $.cookie("scroll") !== null )
-    {
-      $(document).scrollTop( $.cookie("scroll") );
-   }
-   $(window).on("scroll", function()
-   {
-     $.cookie("scroll", $(document).scrollTop() );
-   });
- {% endblock %}
+{
+	$(document).scrollTop( $.cookie("scroll") );
+}
+$(window).on("scroll", function()
+{
+	$.cookie("scroll", $(document).scrollTop() );
+});
+{% endblock %}

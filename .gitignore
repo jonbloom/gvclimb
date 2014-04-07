@@ -1,5 +1,4 @@
 *.pyc
 gvclimb.sqlite
 *.sqlite
-
-static/.DS_Store
+*.sqlite

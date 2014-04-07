@@ -5,7 +5,7 @@
 {% block body %}
 {% if topropes %}
 <a id="toprope"></a>
-<h2>Top Rope</h2>
+<h2>Top Rope <small class="visible-xs">Tap to expand</small></h2>
 <div class="tablesorter hidden-xs">
 	<table class="table tablesorter" id="table_boulder">
 		<thead>
@@ -40,57 +40,38 @@
 	</table>
 </div>
 
-<div class="visible-xs">
-	<div class="row">
-		{% for route in topropes %}
-		<div class="col-md-3">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">{{ route.name }}</h3>
-
-				</div>
-				<div class="panel-body">
-					<p>{{ route.tape_div|safe }}</p>
-					<hr>
-					<p>Rating: <span class="pull-right">{{ '5.' + route.rating }}</span></p>
-					<hr>
-					<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
-					<hr>
-					<p>Date: <span class="pull-right">{{route.dateSet }}</p>
-					<hr>
-					<p>Setter: <span class="pull-right">{{route.setter }}</p>
-				</div>
-				{% if session.logged_in %}
-				<div class="panel-footer">
-					{{route.status}} <span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}</span>
-				</div>
+<div class="visible-xs panel-group" id="topropes">
+	{% if session.logged_in %}
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading" style="text-align: center;">
+				<i class="fa fa-lg fa-fw green fa-check-circle"></i><small>Send</small>
+				<i class="fa fa-lg fa-fw yellow fa-check-circle"></i><small>Attempt</small>
+				<i class="fa fa-lg fa-fw red fa-thumbs-o-down"></i><small>Request Removal</small>
+				{% if session.is_admin %}
+				<br>
+				<i class="fa fa-lg fa-fw fa-pencil" style="color: #007fff"></i><small>Edit</small>
+				<i class="fa fa-lg fa-fw fa-times red"></i><small>Delete</small>
 				{% endif %}
 			</div>
+
 		</div>
-		{% if loop.index is divisibleby 4 %}
 	</div>
-	<div class="row">
-		{% endif %}
-		{% endfor %}
-	</div>
-</div>
-{% endif %}
-{% if boulders %}
-<a id="boulder"></a>
-<h2>Boulder</h2>
-<div class="visible-xs panel-group" id="boulders">
-	{% for route in boulders %}<div class="col-md-3">
+	<br>
+	{% endif %}
+	{% for route in topropes %}
+	<div class="col-md-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title">
-				<a data-toggle="collapse" data-parent="#accordion" href="#route_{{route.id}}">
+			<h3 class="panel-title" data-toggle="collapse" data-parent="#topropes" href="#route_{{route.id}}">
 					{{ route.name }}
-				</a>
 			</h3>
 		</div>
-		<div id= "route_{{route.id}}" class="panel-collapse collapse">
+		<div id="route_{{route.id}}" class="panel-collapse collapse">
 			<div class="panel-body">
-				<p>Rating: <span class="pull-right">{{route.rating }}</span></p>
+				<p>{{ route.tape_div|safe }}</p>
+				<hr>
+				<p>Rating: <span class="pull-right">5.{{route.rating }}</span></p>
 				<hr>
 				<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
 				<hr>
@@ -98,17 +79,71 @@
 				<hr>
 				<p>Setter: <span class="pull-right">{{route.setter }}</p>
 				<hr>
-				<p>{{ route.tape_div|safe }}</p>
 			</div>
 		</div>
-		{% if session.logged_in %}
+		
 		<div class="panel-footer">
-			{{route.status}} <span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}</span>
+			5.{{route.rating}}, Rope {{route.rope}}{% if session.logged_in %}<span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}{% endif %}</span>
 		</div>
-		{% endif %}
-	</div></div>
-	{% endfor %}
+		
+	</div>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% if boulders %}
+<a id="boulder"></a>
+<h2>Boulder <small class="display-xs">Tap to expand</small></h2>
+<div class="visible-xs panel-group" id="boulders">
+	{% if session.logged_in %}
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading" style="text-align: center;">
+				<i class="fa fa-lg fa-fw green fa-check-circle"></i><small>Send</small>
+				<i class="fa fa-lg fa-fw yellow fa-check-circle"></i><small>Attempt</small>
+				<i class="fa fa-lg fa-fw red fa-thumbs-o-down"></i><small>Request Removal</small>
+				{% if session.is_admin %}
+				<br>
+				<i class="fa fa-lg fa-fw fa-pencil" style="color: #007fff"></i><small>Edit</small>
+				<i class="fa fa-lg fa-fw fa-times red"></i><small>Delete</small>
+				{% endif %}
+			</div>
 
+		</div>
+	</div>
+	<br>
+	{% endif %}
+	{% for route in boulders %}
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading" data-toggle="collapse" data-parent="#topropes" href="#route_{{route.id}}">
+				<h3 class="panel-title">
+					{{ route.name }}
+
+				</h3>
+			</div>
+			<div id="route_{{route.id}}" class="panel-collapse collapse">
+				<div class="panel-body">
+					<p>{{ route.tape_div|safe }}</p>
+					<hr>
+					<p>Rating: <span class="pull-right">{{route.rating }}</span></p>
+					<hr>
+					<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
+					<hr>
+					<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+					<hr>
+					<p>Setter: <span class="pull-right">{{route.setter }}</p>
+
+				</div>
+			</div>
+
+			<div class="panel-footer">
+				{{route.rating}}, Rope {{route.rope}}{% if session.logged_in %}<span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}{% endif %}</span>
+			</div>
+
+		</div>
+	</div>
+	{% endfor %}
 </div>
 
 
