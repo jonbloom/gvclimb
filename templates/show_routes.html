@@ -41,52 +41,55 @@
 </div>
 
 <div class="visible-xs">
-<div class="row">
-{% for route in topropes %}
-<div class="col-md-3">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">{{ route.name }}</h3>
+	<div class="row">
+		{% for route in topropes %}
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">{{ route.name }}</h3>
+
+				</div>
+				<div class="panel-body">
+					<p>{{ route.tape_div|safe }}</p>
+					<hr>
+					<p>Rating: <span class="pull-right">{{ '5.' + route.rating }}</span></p>
+					<hr>
+					<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
+					<hr>
+					<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+					<hr>
+					<p>Setter: <span class="pull-right">{{route.setter }}</p>
+				</div>
+				{% if session.logged_in %}
+				<div class="panel-footer">
+					{{route.status}} <span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}</span>
+				</div>
+				{% endif %}
+			</div>
 		</div>
-		<div class="panel-body">
-				<p>Rating: <span class="pull-right">{{ '5.' + route.rating }}</span></p>
-				<hr>
-				<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
-				<hr>
-				<p>Date: <span class="pull-right">{{route.dateSet }}</p>
-				<hr>
-				<p>Setter: <span class="pull-right">{{route.setter }}</p>
-				<hr>
-				<p>{{ route.tape_div|safe }}</p>
-		</div>
-		{% if session.logged_in %}
-		<div class="panel-footer">
-			{{ action_button(route.id,route.btn_class,route.status,'home', route.voted) }}
-		</div>
-		{% endif %}
+		{% if loop.index is divisibleby 4 %}
 	</div>
-</div>
-{% if loop.index is divisibleby 4 %}
-</div>
-<div class="row">
-{% endif %}
-{% endfor %}
-</div>
+	<div class="row">
+		{% endif %}
+		{% endfor %}
+	</div>
 </div>
 {% endif %}
 {% if boulders %}
 <a id="boulder"></a>
 <h2>Boulder</h2>
-
-<div class="visible-xs">
-<div class="row">
-{% for route in boulders %}
-<div class="col-md-3">
+<div class="visible-xs panel-group" id="boulders">
+	{% for route in boulders %}<div class="col-md-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title">{{ route.name }}</h3>
+			<h3 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion" href="#route_{{route.id}}">
+					{{ route.name }}
+				</a>
+			</h3>
 		</div>
-		<div class="panel-body">
+		<div id= "route_{{route.id}}" class="panel-collapse collapse">
+			<div class="panel-body">
 				<p>Rating: <span class="pull-right">{{route.rating }}</span></p>
 				<hr>
 				<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
@@ -96,20 +99,16 @@
 				<p>Setter: <span class="pull-right">{{route.setter }}</p>
 				<hr>
 				<p>{{ route.tape_div|safe }}</p>
+			</div>
 		</div>
 		{% if session.logged_in %}
 		<div class="panel-footer">
-			{{ action_button(route.id,route.btn_class,route.status,'home', route.voted) }}
+			{{route.status}} <span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}</span>
 		</div>
 		{% endif %}
-	</div>
-</div>
-{% if loop.index is divisibleby 4 %}
-</div>
-<div class="row">
-{% endif %}
-{% endfor %}
-</div>
+	</div></div>
+	{% endfor %}
+
 </div>
 
 

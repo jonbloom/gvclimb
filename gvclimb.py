@@ -4,7 +4,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
 abort, render_template, flash
 
 # configuration
-DATABASE = '/var/www/gvclimb/gvclimb.sqlite'
+DATABASE = 'gvclimb.sqlite'
 DEBUG = True
 SECRET_KEY = 'secret'
 USERNAME = 'jonbloom'

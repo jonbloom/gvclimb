@@ -79,6 +79,10 @@ body{
 .red{
 	color: red;
 }
+
+table a, .table a{
+	text-decoration: none;
+}
 .bs-callout {
 	margin: 20px 0;
 	padding: 15px 30px 15px 15px;

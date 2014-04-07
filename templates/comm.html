@@ -7,7 +7,7 @@
 
 {% if routes %}
 <h2>Routes Requested to be Removed</h2>
-<div class="table-responsive">
+<div class="hidden-xs">
 	<table class="table">
 		<tr>
 			<th width="5%">Rating</th>
@@ -38,10 +38,48 @@
 		</tr>
 		{% endfor %}
 	</table>
+</div>
+<div class="visible-xs">
+<div class="row">
+{% for route in routes %}
+<div class="col-md-3">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{ route.name }}</h3>
+
+		</div>
+		<div class="panel-body">
+				<p>{{ route.tape_div|safe }}</p>
+				<hr>
+				<p>Rating: <span class="pull-right">{% if route.route_type == 'toprope' %}{{ '5.' + route.rating }}{% endif %}
+			{% if route.route_type == 'boulder' %}{{route.rating }}{% endif %}</span></p>
+				<hr>
+				<p>Rope: <span class="pull-right">{{ route.rope }}</span></p>
+				<hr>
+				<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+				<hr>
+				<p>Setter: <span class="pull-right">{{route.setter }}</p>
+				<hr>
+				<p>Votes: <span class="pull-right">{{route.num_votes }}</p>
+		</div>
+		{% if session.logged_in %}
+		<div class="panel-footer">
+			{{route.status}} <span class="pull-right">{{ action_icon(route.id,route.btn_class,route.status,'home', route.voted) }}</span>
+		</div>
+		{% endif %}
+	</div>
+</div>
+{% if loop.index is divisibleby 4 %}
+</div>
+<div class="row">
+{% endif %}
+{% endfor %}
+</div>
+</div>
 {% else %}
 <h1>There have no routes that have been requested to be removed.</h1>
 {% endif %}
-</div>
+
 {% endblock %}
 {% block scripts %}
 if ( $.cookie("scroll") !== null )
