@@ -101,8 +101,8 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/cosmo/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-    <link rel="stylesheet" href="{{url_for('static',filename='jdpicker.css')}}" type="text/css" media="screen" />
-    <link rel="stylesheet" href="{{url_for('static',filename='tablesorter_styles.css')}}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{{url_for('static', filename='jdpicker.css')}}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{{url_for('static', filename='tablesorter_styles.css')}}" type="text/css" media="screen" />
     <style type="text/css">
     {% block css %}
     {% endblock %}
@@ -136,16 +136,16 @@
                 <ul class="nav navbar-nav">
                     {% if request.path == "/" %}
                     <li class="visible-xs">
-                        <a href="#toprope" data-toggle="collapse" data-target=".navbar-collapse">Toprope</a>
+                        <a class="scroll" data-scrollto="toprope" data-toggle="collapse" data-target=".navbar-collapse">Toprope</a>
                   </li>
                   <li class="hidden-xs">
-                      <a href="#toprope">Toprope</a>
+                      <a class="scroll" data-scrollto="toprope">Toprope</a>
                   </li>
                   <li class="visible-xs">
-                        <a href="#boulder" data-toggle="collapse" data-target=".navbar-collapse">Boulder</a>
+                        <a class="scroll" data-scrollto="boulder" data-toggle="collapse" data-target=".navbar-collapse">Boulder</a>
                   </li>
                   <li class="hidden-xs">
-                      <a href="#boulder">Boulder</a>
+                      <a class="scroll" data-scrollto="boulder">Boulder</a>
                   </li>
                   {% endif %} {% if request.path == "/profile" %}
                   <li>
@@ -159,11 +159,12 @@
             <ul class="nav navbar-nav navbar-right">
                 <li {% if request.path=="/comm" %} class="active" {%endif%}>
                     <a href="{{url_for('comm')}}" alt="Route Comm." title="Route Comm.">
-                        <i class="fa fa-bar-chart-o fa-lg fa-fw"></i>
-                        <span class="visible-xs">Route Comm.</span>
+                        <i class="fa fa-comment fa-lg fa-fw"></i>
+                        <!-- <span class="visible-xs">Route Comm.</span>
                         {% if request.path == "/comm" %}
                         <span class="hidden-xs" style="inline-block">Route Comm.</span>
-                        {%endif%}
+                        {%endif%} -->
+                        Route Comm
                     </a>
                 </li>
                 {% if session.logged_in %} {% if session.is_admin %}
@@ -171,36 +172,40 @@
                     <a href="{{url_for('add')}}" alt="Add Route" title="Add Route">
 
                         <i class="fa fa-plus fa-lg fa-fw"></i>
-                        <span class="visible-xs">Add Route</span>
+                        <!-- <span class="visible-xs">Add Route</span>
                         {% if request.path == "/add" %}
                         <span class="hidden-xs">Add Route</span>
-                        {%endif%}
+                        {%endif%} -->
+                        Add Route
                     </a>
                 </li>
                 <li {% if request.path=="/admin" %} class="active" {%endif%}>
                     <a href="{{url_for('admin')}}" alt="Administration" title="Administration">
                         <i class="fa fa-cog fa-lg fa-fw"></i>
-                        <span class="visible-xs">Administration</span>
+                        <!-- <span class="visible-xs">Administration</span>
                         {% if request.path == "/admin" %}
                         <span class="hidden-xs" style="inline-block">Administration</span>
-                        {%endif%}
+                        {%endif%} -->
+                        Admin
                     </a>
                 </li>
                 {% endif %}
                 <li {% if request.path=="/profile" %} class="active" {%endif%}>
                     <a href="{{url_for('profile')}}" alt="Logged in as {{ session.logged_in_as }}" title="Logged in as {{ session.logged_in_as }}">
                         <i class="fa fa-user fa-lg fa-fw"></i>
-                        <span class="visible-xs">{{session.logged_in_as}}</span>
+                        <!-- <span class="visible-xs">{{session.logged_in_as}}</span>
                         {% if request.path == "/profile" %}
                         <span class="hidden-xs">{{session.logged_in_as}}</span>
-                        {%endif%}
+                        {%endif%} -->
+                        {{session.logged_in_as}}
                     </a>
                 </li>
                 <li>
                     <a href="{{url_for('logout')}}" alt="Logout" title="Logout">
                         <span class="glyphicon glyphicon-off">
                         </span>
-                        <span class="visible-xs">Logout</span>
+                        <!-- <span class="visible-xs">Logout</span> -->
+                        Logout
                     </a>
 
                 </li>
@@ -221,6 +226,7 @@
                 <li class="dropdown" id="menuLogin">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                         <i class="fa fa-user"></i>
+                        Login
                         <span class="caret">
                         </span>
                     </button>
@@ -269,6 +275,12 @@ function addClasses(){
     $('.unvote').children().addClass('fa-thumbs-down');
 }
 function bindClicks(){
+
+    $('.scroll').click(function(){
+        var scrollTo = '#' + $(this).data('scrollto');
+        scrollToElem(scrollTo);
+    });
+
     $('.unsend').click(function(){
         var id = $(this).data('id');
         $.ajax("/unsend/" + id + "/home");
@@ -314,6 +326,13 @@ function bindClicks(){
 }
 bindClicks();
 addClasses();
+
+function scrollToElem(e){
+    $('html, body').animate({
+    scrollTop: $(e).offset().top-50
+}, 500);
+}
+
 if ($(".action").length > 6) {
     $(".action").slice(-4).addClass("dropup");
 }
