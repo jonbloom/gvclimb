@@ -109,8 +109,6 @@
 	<tbody>
 		{% for route in attempted %}
 		<tr>
-			
-			
 			{% if route.route_type == 'toprope' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
 			{% if route.route_type == 'boulder' %}<td> {{route.rating }}</td>{% endif %}
 			<td>{{ route.rope }}</td>
@@ -128,38 +126,7 @@
 	</tbody>
 	</table>
 </div>
-<div class="tablesorter hidden-xs">
-	<table class="table" id="table_sent">
-		<tr>
-			<th width="5%">Rating</th>
-			<th width="5%">Rope</th>
-			<th width="35%">Name</th>
-			<th width="10%">Date Set</th>
-			<th width="20%">Setter</th>
-			<th width="15%">Tape</th>
-			{% if session.logged_in %}
-			<th width="10%">Actions</th>
-			{% endif %}
 
-		</tr>
-		{% for route in sent %}
-		<tr>
-			{% if route.route_type == 'toprope' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
-			{% if route.route_type == 'boulder' %}<td> {{route.rating }}</td>{% endif %}
-			<td>{{ route.rope }}</td>
-			<td>{{ route.name }}</td>
-			<td>{{ route.dateSet }}</td>
-			<td>{{ route.setter }}</td>
-			<td>{{ route.tape_div|safe }}</td>
-			{% if session.logged_in %}
-			<td>{{ action_button(route.id,route.btn_class,route.status,'profile', route.voted) }}</td>
-			{% endif %}
-
-		</tr>
-		{% else %}
-		{% endfor %}
-	</table>
-</div>
 <div class="visible-xs panel-group" id="attempted">
 	{% if session.logged_in %}
 	<div class="col-md-3">

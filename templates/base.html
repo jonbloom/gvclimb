@@ -7,23 +7,23 @@
 <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
     {% if status == "Sent" %}
     <li>
-        <a data-id= "{{id}}" href="/unsend/{{id}}/{{page}}"><i class="fa fa-check-circle fa-lg fa-fw green"></i></span>Unmark Sent</a>
+        <a data-id= "{{id}}" href="/unsend/{{id}}/{{page}}"><i class="fa fa-check-circle fa-lg fa-fw green"></i>Unmark Sent</a>
     </li>
     {% elif status == "Attempted" %}
     <li>
         <a data-id= "{{id}}" href="/send/{{id}}/{{page}}"><i class="fa fa-check-circle-o fa-lg fa-fw green"></i>Mark Sent</a>
     </li>
     <li>
-        <a data-id= "{{id}}" href="/unattempt/{{id}}/{{page}}"><i class="fa fa-check-circle fa-lg fa-fw yellow"></i></span>Unmark Attempted</a>
+        <a data-id= "{{id}}" href="/unattempt/{{id}}/{{page}}"><i class="fa fa-check-circle fa-lg fa-fw yellow"></i>Unmark Attempted</a>
     </li>
     {% else %}
     <li>
-        <a data-id= "{{id}}" href="/send/{{id}}/{{page}}"><i class="fa fa-check-circle-o fa-lg fa-fw green"></i></i>Mark Sent</a>
+        <a data-id= "{{id}}" href="/send/{{id}}/{{page}}"><i class="fa fa-check-circle-o fa-lg fa-fw green"></i>Mark Sent</a>
     </li>
     <li>
-        <a data-id= "{{id}}" href="/attempt/{{id}}/{{page}}"><i class="fa fa-check-circle-o fa-lg fa-fw yellow"></i></i>Mark Attempted</a>
+        <a data-id= "{{id}}" href="/attempt/{{id}}/{{page}}"><i class="fa fa-check-circle-o fa-lg fa-fw yellow"></i>Mark Attempted</a>
     </li>
-    {% endif %}
+    {% endif %} 
     <li class="divider">
     </li>
     {% if voted == "True" %}
@@ -104,6 +104,12 @@
     <link rel="stylesheet" href="{{url_for('static', filename='jdpicker.css')}}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{{url_for('static', filename='tablesorter_styles.css')}}" type="text/css" media="screen" />
     <style type="text/css">
+    @media (min-width:768px){
+        a:hover:after{
+        content: attr(data-text);
+    }
+    }
+    
     {% block css %}
     {% endblock %}
     </style>
@@ -137,122 +143,101 @@
                     {% if request.path == "/" %}
                     <li class="visible-xs">
                         <a class="scroll" data-scrollto="toprope" data-toggle="collapse" data-target=".navbar-collapse">Toprope</a>
-                  </li>
-                  <li class="hidden-xs">
+                    </li>
+                    <li class="hidden-xs">
                       <a class="scroll" data-scrollto="toprope">Toprope</a>
                   </li>
                   <li class="visible-xs">
-                        <a class="scroll" data-scrollto="boulder" data-toggle="collapse" data-target=".navbar-collapse">Boulder</a>
-                  </li>
-                  <li class="hidden-xs">
-                      <a class="scroll" data-scrollto="boulder">Boulder</a>
-                  </li>
-                  {% endif %} {% if request.path == "/profile" %}
-                  <li>
-                    <a href="#sent" class="active">Sent</a>
+                    <a class="scroll" data-scrollto="boulder" data-toggle="collapse" data-target=".navbar-collapse">Boulder</a>
                 </li>
-                <li>
-                    <a href="#attempted">Attempted</a>
-                </li>
-                {% endif %}
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li {% if request.path=="/comm" %} class="active" {%endif%}>
-                    <a href="{{url_for('comm')}}" alt="Route Comm." title="Route Comm.">
-                        <i class="fa fa-comment fa-lg fa-fw"></i>
-                        <!-- <span class="visible-xs">Route Comm.</span>
-                        {% if request.path == "/comm" %}
-                        <span class="hidden-xs" style="inline-block">Route Comm.</span>
-                        {%endif%} -->
-                        Route Comm
-                    </a>
-                </li>
-                {% if session.logged_in %} {% if session.is_admin %}
-                <li {% if request.path=="/add" %} class="active" {%endif%}>
-                    <a href="{{url_for('add')}}" alt="Add Route" title="Add Route">
-
-                        <i class="fa fa-plus fa-lg fa-fw"></i>
-                        <!-- <span class="visible-xs">Add Route</span>
-                        {% if request.path == "/add" %}
-                        <span class="hidden-xs">Add Route</span>
-                        {%endif%} -->
-                        Add Route
-                    </a>
-                </li>
-                <li {% if request.path=="/admin" %} class="active" {%endif%}>
-                    <a href="{{url_for('admin')}}" alt="Administration" title="Administration">
-                        <i class="fa fa-cog fa-lg fa-fw"></i>
-                        <!-- <span class="visible-xs">Administration</span>
-                        {% if request.path == "/admin" %}
-                        <span class="hidden-xs" style="inline-block">Administration</span>
-                        {%endif%} -->
-                        Admin
-                    </a>
-                </li>
-                {% endif %}
-                <li {% if request.path=="/profile" %} class="active" {%endif%}>
-                    <a href="{{url_for('profile')}}" alt="Logged in as {{ session.logged_in_as }}" title="Logged in as {{ session.logged_in_as }}">
-                        <i class="fa fa-user fa-lg fa-fw"></i>
-                        <!-- <span class="visible-xs">{{session.logged_in_as}}</span>
-                        {% if request.path == "/profile" %}
-                        <span class="hidden-xs">{{session.logged_in_as}}</span>
-                        {%endif%} -->
-                        {{session.logged_in_as}}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url_for('logout')}}" alt="Logout" title="Logout">
-                        <span class="glyphicon glyphicon-off">
-                        </span>
-                        <!-- <span class="visible-xs">Logout</span> -->
-                        Logout
-                    </a>
-
-                </li>
-            </div>
-            {% else %}
-            <li class="visible-xs">
-
-                <a href="{{ url_for('login') }}">
-                    <i class="fa fa-user fa-fw"></i>
-                    Login
-                </a>
-                <a href="{{ url_for('register') }}">
-                    <i class="fa fa-share fa-fw"></i>
-                    Register
-                </a>
+                <li class="hidden-xs">
+                  <a class="scroll" data-scrollto="boulder">Boulder</a>
+              </li>
+              {% endif %} {% if request.path == "/profile" %}
+              <li>
+                <a class="scroll" data-scrollto="sent">Sent</a>
             </li>
-            <ul class="nav navbar-nav navbar-right hidden-xs">
-                <li class="dropdown" id="menuLogin">
-                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                        <i class="fa fa-user"></i>
-                        Login
-                        <span class="caret">
-                        </span>
-                    </button>
-                    <div class="dropdown-menu" style="width:250px; padding:20px;">
-                        <form class="form" role="form" action="{{ url_for('login') }}" method="POST">
-                            <div class="form-group">
-                                <input class="form-control" name="username" id="username" type="text" placeholder="Username">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" name="password" id="password" type="password" placeholder="Password">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" id="btnLogin" class="btn btn-success">Login</button>
-                                <a href="{{ url_for('register') }}" class="btn btn-success">New User?</a>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-            </ul>
-
+            <li>
+                <a class="scroll" data-scrollto="attempted">Attempted</a>
+            </li>
             {% endif %}
         </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li {% if request.path=="/comm" %} class="active" {%endif%}>
+                <a href="{{url_for('comm')}}" alt="Route Comm." title="Route Comm." data-text="Route Comm.">
+                    <i class="fa fa-comment fa-lg fa-fw"></i>
+                    <span class="visible-xs">Route Comm.</span>
+                </a>
+            </li>
+            {% if session.logged_in %} {% if session.is_admin %}
+            <li {% if request.path=="/add" %} class="active" {%endif%}>
+                <a href="{{url_for('add')}}" alt="Add Route" title="Add Route" data-text="Add Route">
+                    <i class="fa fa-plus fa-lg fa-fw"></i>
+                    <span class="visible-xs">Add Route</span>
+                </a>
+            </li>
+            <li {% if request.path=="/admin" %} class="active" {%endif%}>
+                <a href="{{url_for('admin')}}" alt="Administration" title="Administration"  data-text="Administration">
+                    <i class="fa fa-cog fa-lg fa-fw"></i>
+                    <span class="visible-xs">Administration</span>
+                </a>
+            </li>
+            {% endif %}
+            <li {% if request.path=="/profile" %} class="active" {%endif%}>
+                <a href="{{url_for('profile')}}" alt="Logged in as {{ session.logged_in_as }}" title="Logged in as {{ session.logged_in_as }}"  data-text="{{session.logged_in_as}}">
+                    <i class="fa fa-user fa-lg fa-fw"></i>
+                    <span class="visible-xs">{{session.logged_in_as}}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{url_for('logout')}}" alt="Logout" title="Logout" data-text="Logout">
+                    <i class="fa fa-lg fa-fw fa-power-off"></i>
+                    <span class="visible-xs">Logout</span>
+                </a>
+
+            </li>
+        </div>
+        {% else %}
+        <li class="visible-xs">
+
+            <a href="{{ url_for('login') }}">
+                <i class="fa fa-user fa-fw fa-lg"></i>
+                Login
+            </a>
+            <a href="{{ url_for('register') }}">
+                <i class="fa fa-share fa-fw fa-lg"></i>
+                Register
+            </a>
+        </li>
+        <ul class="nav navbar-nav navbar-right hidden-xs">
+            <li class="dropdown" id="menuLogin">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"  data-text="Login">
+                    <i class="fa fa-user fa-fw fa-lg"></i>
+                </a>
+
+                <div class="dropdown-menu" style="width:250px; padding:20px;">
+                    <form class="form" role="form" action="{{ url_for('login') }}" method="POST">
+                        <div class="form-group">
+                            <input class="form-control" name="username" id="username" type="text" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" name="password" id="password" type="password" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="btnLogin" class="btn btn-success">Login</button>
+                            <a href="{{ url_for('register') }}" class="btn btn-success">New User?</a>
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        {% endif %}
+    </ul>
 
 
-    </div>
-    <!--/.nav-collapse -->
+</div>
+<!--/.nav-collapse -->
 
 </div>
 
@@ -329,8 +314,15 @@ addClasses();
 
 function scrollToElem(e){
     $('html, body').animate({
-    scrollTop: $(e).offset().top-50
-}, 500);
+        scrollTop: $(e).offset().top-50
+    }, 500);
+}
+
+function spin(e){
+    $(e).addClass('fa-spin');
+        setTimeout(function(){
+            $(e).removeClass('fa-spin');
+        },2000);
 }
 
 if ($(".action").length > 6) {
