@@ -398,9 +398,9 @@ def logout():
     session.pop('is_admin', None)
     return redirect(url_for('home'))
 
-@app.route('/json')
-def json():
-	return j.dumps(g.data)
+@app.route('/json/<type>')
+def json(type):
+	return j.dumps(g.data[type])
 
 @app.errorhandler(400)
 def custom_405(error):
