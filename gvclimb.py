@@ -413,7 +413,7 @@ def custom_401(error):
 	return render_template('error.html',error=error,message=message,code=401), 401
 @app.errorhandler(404)
 def custom_404(error):
-	message = "WHatever you were looking for does not exist."
+	message = "Whatever you were looking for does not exist."
 	return render_template('error.html',error=error, message=message,code=404), 404
 @app.errorhandler(405)
 def custom_405(error):
