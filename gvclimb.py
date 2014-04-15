@@ -2,6 +2,7 @@ import sqlite3
 import hashlib
 from flask import Flask, request, session, g, redirect, url_for, \
 abort, render_template, flash
+import json as j
 
 # configuration
 DATABASE = '/var/www/gvclimb/gvclimb.sqlite'
@@ -396,6 +397,10 @@ def logout():
     session.pop('logged_in', None)
     session.pop('is_admin', None)
     return redirect(url_for('home'))
+
+@app.route('/json')
+def json():
+	return j.dumps(g.data)
 
 @app.errorhandler(400)
 def custom_405(error):
