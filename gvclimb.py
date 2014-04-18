@@ -28,10 +28,11 @@ def teardown_request(exception):
 		db.close()
 
 def get_data():
-	rtn = {'tr': [], 'b': [], 'sent': [], 'attempted': [], 'comm': []}
+	rtn = {'tr': [], 'b': [], 'lead': [], 'sent': [], 'attempted': [], 'comm': [], 'counts': {}}
 	all_routes = g.db.execute('select r.*, k.key from routes as r join orderkeys as k on k.rating = r.rating order by k.key')
 	comm_routes = dict(g.db.execute("select route_id, count(route_id) from votes group by route_id").fetchall())
 	default_colors = g.db.execute('select * from colors').fetchone()
+	rtn['counts'] = dict(g.db.execute("SELECT orderkeys.rating, COUNT(routes.id) FROM orderkeys LEFT JOIN routes USING (rating) GROUP BY orderkeys.rating ORDER BY orderkeys.key"))
 	sent_ids = []
 	attempted_ids = []
 	user_voted_ids = []
@@ -68,6 +69,10 @@ def get_data():
 			btn_class = 'btn-default'
 		if row[1] == "toprope":
 			rtn['tr'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
+				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
+		elif row[1] == "lead":
+			rtn['lead'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
 				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
 		else:
