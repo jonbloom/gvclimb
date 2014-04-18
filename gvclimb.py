@@ -89,7 +89,7 @@ def get_data():
 
 @app.route('/')
 def home():
-	return render_template('show_routes.html', topropes=g.data['tr'], boulders=g.data['b'])
+	return render_template('show_routes.html', topropes=g.data['tr'], boulders=g.data['b'], leads=g.data['lead'])
 
 
 @app.route('/profile')
