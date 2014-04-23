@@ -22,6 +22,7 @@
 		{% for route in sent %}
 		<tr>
 			{% if route.route_type == 'toprope' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
+			{% if route.route_type == 'lead' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
 			{% if route.route_type == 'boulder' %}<td> {{route.rating }}</td>{% endif %}
 			<td>{{ route.rope }}</td>
 			<td>{{ route.name }}</td>
@@ -110,6 +111,7 @@
 		{% for route in attempted %}
 		<tr>
 			{% if route.route_type == 'toprope' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
+			{% if route.route_type == 'lead' %}<td>{{ '5.' + route.rating }}</td>{% endif %}
 			{% if route.route_type == 'boulder' %}<td> {{route.rating }}</td>{% endif %}
 			<td>{{ route.rope }}</td>
 			<td>{{ route.name }}</td>
