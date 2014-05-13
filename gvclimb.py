@@ -1,7 +1,7 @@
 import sqlite3
 import hashlib
 from flask import Flask, request, session, g, redirect, url_for, \
-abort, render_template, flash
+abort, render_template, flash, Reponse
 import json as j
 
 # configuration
@@ -405,7 +405,7 @@ def logout():
 
 @app.route('/json/<type>')
 def json(type):
-	return j.dumps(g.data[type])
+	return Response(j.dumps(g.data[type]),mimetype='application/json')
 
 @app.errorhandler(400)
 def custom_405(error):
