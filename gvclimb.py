@@ -388,7 +388,7 @@ def register():
 			return render_template('register.html',error=error, which_error=which_error,username=username)
 		else:
 			password = hashlib.md5(request.form['password']).hexdigest()
-			g.db.execute("insert into users values (NULL, ?, ?, 0, '','')", [username,password])
+			g.db.execute("insert into users values (NULL, ?, ?, 0)", [username,password])
 			g.db.commit()
 			session['logged_in'] = True
 			session['logged_in_as'] = username
