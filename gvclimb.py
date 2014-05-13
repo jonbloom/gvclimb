@@ -1,7 +1,7 @@
 import sqlite3
 import hashlib
 from flask import Flask, request, session, g, redirect, url_for, \
-abort, render_template, flash, Reponse
+abort, render_template, flash, Response
 import json as j
 
 # configuration
