@@ -300,19 +300,19 @@ def delete_setter(id):
 
 
 
-@app.route('/adminify/<id>')
-def adminify(id):
+@app.route('/adminify/<username>')
+def adminify(username):
 	require_logged_in()
 	require_admin()
-	g.db.execute("update users set is_admin = 1 where id = ?",[id])
+	g.db.execute("update users set is_admin = 1 where username = ?",[username])
 	g.db.commit()
 	return redirect(url_for('admin'))
 
-@app.route('/deadminify/<id>')
-def deadminify(id):
+@app.route('/deadminify/<username>')
+def deadminify(username):
 	require_logged_in()
 	require_admin()
-	g.db.execute("update users set is_admin = 0 where id = ?",[id])
+	g.db.execute("update users set is_admin = 0 where username = ?",[username])
 	g.db.commit()
 	return redirect(url_for('admin'))
 
