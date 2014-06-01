@@ -39,24 +39,7 @@
 	</table>
 </div>
 <div class="visible-xs panel-group" id="sent">
-	{% if session.logged_in %}
-	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading" style="text-align: center;">
-				<i class="fa fa-lg fa-fw green fa-check-circle"></i><small>Send</small>
-				<i class="fa fa-lg fa-fw yellow fa-check-circle"></i><small>Attempt</small>
-				<i class="fa fa-lg fa-fw red fa-thumbs-o-down"></i><small>Request Removal</small>
-				{% if session.is_admin %}
-				<br>
-				<i class="fa fa-lg fa-fw fa-pencil" style="color: #007fff"></i><small>Edit</small>
-				<i class="fa fa-lg fa-fw fa-times red"></i><small>Delete</small>
-				{% endif %}
-			</div>
-
-		</div>
-	</div>
-	<br>
-	{% endif %}
+	{{icon_legend()}}
 	{% for route in sent %}
 	<div class="col-md-3">
 	<div class="panel panel-default">
@@ -130,24 +113,7 @@
 </div>
 
 <div class="visible-xs panel-group" id="attempted">
-	{% if session.logged_in %}
-	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading" style="text-align: center;">
-				<i class="fa fa-lg fa-fw green fa-check-circle"></i><small>Send</small>
-				<i class="fa fa-lg fa-fw yellow fa-check-circle"></i><small>Attempt</small>
-				<i class="fa fa-lg fa-fw red fa-thumbs-o-down"></i><small>Request Removal</small>
-				{% if session.is_admin %}
-				<br>
-				<i class="fa fa-lg fa-fw fa-pencil" style="color: #007fff"></i><small>Edit</small>
-				<i class="fa fa-lg fa-fw fa-times red"></i><small>Delete</small>
-				{% endif %}
-			</div>
-
-		</div>
-	</div>
-	<br>
-	{% endif %}
+	{{icon_legend()}}
 	{% for route in attempted %}
 	<div class="col-md-3">
 	<div class="panel panel-default">

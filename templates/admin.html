@@ -9,6 +9,7 @@
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#colors" data-toggle="tab">Default Colors</a></li>
 	<li><a href="#setters" data-toggle="tab">Setters</a></li>
+	<li><a href="#admins" data-toggle="tab">Admins</a></li>
 </ul>
 
 
@@ -324,6 +325,40 @@
 
 		</table>
 	</div>
+	<div class="tab-pane table-responsive" id="admins">
+		<div class="col-md-6">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for admin in admins %}
+					<tr>
+						<td>
+							{{admin}}
+						</td>
+						<td>
+							<button type="button" class="btn btn-danger" id="deadminify" onclick="deadminify('{{admin}}')">De-Adminify</button>
+						</td>
+					</tr>
+					{% endfor %}
+					<tr>
+						<td>
+							<input type="text" placeholder="Username" name="username"/>
+						</td>
+						<td>
+							<button type="button" class="btn btn-success" onclick="adminify()">Adminify</button>
+						</td>
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+</div>
+
 </div>
 
 
@@ -339,4 +374,11 @@ $("#V5").val("{{default_colors.V5}}");
 $("#V6").val("{{default_colors.V6}}");
 $("#V7").val("{{default_colors.V7}}");
 $("#V8").val("{{default_colors.V8}}");
+function adminify(){
+	var username = $('[name=username]').val();
+	window.location = ("/adminify/" + username);
+}
+function deadminify(username){
+	window.location = ("/deadminify/" + username);
+}
 {% endblock %}

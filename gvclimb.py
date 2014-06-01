@@ -97,15 +97,17 @@ def profile():
 	require_logged_in()
 	return render_template('profile.html', attempted=g.data['attempted'], sent=g.data['sent'])
 
-@app.route('/comm')
-def comm():
-	return render_template('comm.html', routes=g.data['comm'])
+@app.route('/chopping_block')
+def chopping_block():
+	return render_template('chopping_block.html', routes=g.data['comm'])
 
 @app.route('/admin')
 def admin():
 	require_logged_in()
 	require_admin()
 	all_setters = g.db.execute('select * from setters order by name asc')
+	all_admins = g.db.execute('select username from users where is_admin = 1')
+	admins = [a[0] for a in all_admins]
 	setters = [dict(id=s[0],name=s[1]) for s in all_setters.fetchall()]
 	split = len(setters)/4+1
 	setters1 = setters[:split]
@@ -116,7 +118,7 @@ def admin():
 	default_colors = dict(default_colors.fetchone())
 	tape_colors = g.db.execute('select * from tapeColors')
 	tape_colors = [dict(css=c[0],real=c[1]) for c in tape_colors.fetchall()]
-	return render_template('admin.html', setters1=setters1, setters2=setters2, setters3=setters3, setters4=setters4, default_colors=default_colors, tape_colors=tape_colors)
+	return render_template('admin.html', setters1=setters1, setters2=setters2, setters3=setters3, setters4=setters4, default_colors=default_colors, tape_colors=tape_colors, admins=admins)
 
 @app.route('/add', methods=['GET','POST'])
 def add():
@@ -223,14 +225,14 @@ def delete(route_id,page):
 	g.db.execute("delete from routes where id = ?",[route_id])
 	return redirect(url_for(page))
 
-@app.route('/comm/vote/<route_id>/<page>')
+@app.route('/chopping_block/chop/<route_id>/<page>')
 def comm_vote(route_id,page):
 	require_logged_in()
 	g.db.execute("insert into votes values(?,?);",[route_id,session.get('logged_in_as')])
 	g.db.commit()
 	return redirect(url_for(page))
 
-@app.route('/comm/unvote/<route_id>/<page>')
+@app.route('/chopping_block/unchop/<route_id>/<page>')
 def comm_unvote(route_id,page):
 	require_logged_in()
 	g.db.execute("delete from votes where username = ? and route_id = ?;",[session.get('logged_in_as'),route_id])
@@ -435,4 +437,4 @@ def require_admin():
 
 
 if __name__ == '__main__':
-		app.run(host='0.0.0.0', port=8001)
+		app.run(host='0.0.0.0', port=8080)

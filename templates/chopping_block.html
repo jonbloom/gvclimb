@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Route Comm.{% endblock %}
+{% block title %}Chopping Block{% endblock %}
 {% block head %}
 {% endblock %}
 {% block body %}
 {% if routes %}
-<h2>Routes Requested to be Removed <small class="visible-xs">Tap to expand</small></h2>
+<h2>Chopping Block <small class="visible-xs">Tap to expand</small></h2>
 <div class="tablesorter hidden-xs">
-	<table class="table" id="table_comm">
+	<table class="table" id="table_chopping_block">
 		<thead>
 			<tr>
 				<th width="5%">Rating</th>
@@ -33,37 +33,20 @@
 				<td>{{ route.tape_div|safe }}</td>
 				<td>{{ route.num_votes}}</td>
 				{% if session.logged_in %}
-				<td>{{ action_button(route.id,route.btn_class,route.status,'comm',route.voted) }}</td>
+				<td>{{ action_button(route.id,route.btn_class,route.status,'chopping_block',route.voted) }}</td>
 				{% endif %}
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 </div>
-<div class="visible-xs panel-group" id="comm">
-	{% if session.logged_in %}
-	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading" style="text-align: center;">
-				<i class="fa fa-lg fa-fw green fa-check-circle"></i><small>Send</small>
-				<i class="fa fa-lg fa-fw yellow fa-check-circle"></i><small>Attempt</small>
-				<i class="fa fa-lg fa-fw red fa-thumbs-o-down"></i><small>Request Removal</small>
-				{% if session.is_admin %}
-				<br>
-				<i class="fa fa-lg fa-fw fa-pencil" style="color: #007fff"></i><small>Edit</small>
-				<i class="fa fa-lg fa-fw fa-times red"></i><small>Delete</small>
-				{% endif %}
-			</div>
-
-		</div>
-	</div>
-	<br>
-	{% endif %}
+<div class="visible-xs panel-group" id="chopping_block">
+	{{icon_legend()}}
 	{% for route in routes %}
 	<div class="col-md-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title" onclick="" data-toggle="collapse" data-parent="#comm" href="#route_{{route.id}}">
+			<h3 class="panel-title" onclick="" data-toggle="collapse" data-parent="#chopping_block" href="#route_{{route.id}}">
 					{{ route.name }}
 			</h3>
 		</div>
@@ -91,7 +74,7 @@
 	{% endfor %}
 </div>
 {% else %}
-<h1>There have no routes that have been requested to be removed.</h1>
+<h1>There are no routes on the chopping block.</h1>
 {% endif %}
 
 {% endblock %}

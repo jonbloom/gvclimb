@@ -26,15 +26,16 @@
     {% endif %} 
     <li class="divider">
     </li>
+    {% if session.is_admin %}
     {% if voted == "True" %}
     <li>
-        <a data-id= "{{id}}" href="/comm/unvote/{{id}}/{{page}}"><i class="fa fa-thumbs-up fa-lg fa-fw green"></i>Unrequest Removal</a>
+        <a data-id= "{{id}}" href="/chopping_block/unchop/{{id}}/{{page}}"><i class="fa fa-cut fa-lg fa-fw green"></i>Unchop Route</a>
     </li>
     {% else %}
     <li>
-        <a data-id= "{{id}}" href="/comm/vote/{{id}}/{{page}}"><i class="fa fa-thumbs-down fa-lg fa-fw red"></i>Request Removal</a>
+        <a data-id= "{{id}}" href="/chopping_block/chop/{{id}}/{{page}}"><i class="fa fa-cut fa-lg fa-fw red"></i>Chop Route</a>
     </li>
-    {% endif %} {% if session.is_admin %}
+    {% endif %}
     <li class="divider">
     </li>
     <li>
@@ -43,6 +44,7 @@
     <li>
         <a data-id= "{{id}}" href="/delete/{{id}}/{{page}}"><i class="fa fa-times fa-lg fa-fw red"></i>Delete Route</a>
     </li>
+    
     {% endif %}
 </ul>
 </div>
@@ -66,7 +68,7 @@
 
 {% endif %}
 
-
+{% if session.is_admin %}
 {% if voted == "True" %}
 
 <a data-id="{{id}}" class="unvote"><i class="fa fa-lg fa-fw red"></i></a>
@@ -75,7 +77,7 @@
 
 <a data-id="{{id}}" class="vote"><i class="fa fa-lg fa-fw red"></i></a>
 
-{% endif %} {% if session.is_admin %}
+{% endif %} 
 
 
 
@@ -91,6 +93,27 @@
 {%- endmacro %} {% macro color(css,real) -%}
 <option value="{{css}}">{{real}}</option>
 {% endmacro -%}
+{% macro icon_legend() -%}
+{% if session.logged_in %}
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="text-align: center;">
+                <i class="fa fa-lg fa-fw green fa-check-circle"></i><small>Send</small>
+                <i class="fa fa-lg fa-fw yellow fa-check-circle"></i><small>Attempt</small>
+                
+                {% if session.is_admin %}
+                <br>
+                <i class="fa fa-lg fa-fw red fa-cut"></i><small>Chopping Block</small>
+                <i class="fa fa-lg fa-fw fa-pencil" style="color: #007fff"></i><small>Edit</small>
+                <i class="fa fa-lg fa-fw fa-times red"></i><small>Delete</small>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    <br>
+    {% endif %}
+{%- endmacro %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 
@@ -103,13 +126,10 @@
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='jdpicker.css')}}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{{url_for('static', filename='tablesorter_styles.css')}}" type="text/css" media="screen" />
-    <style type="text/css">
-    @media (min-width:768px){
-        a:hover:after{
-        content: attr(data-text);
-    }
-    }
+
     
+
+    <style type="text/css">
     {% block css %}
     {% endblock %}
     </style>
@@ -124,7 +144,7 @@
 </head>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="header">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -153,6 +173,12 @@
                 <li class="hidden-xs">
                   <a class="scroll" data-scrollto="boulder">Boulder</a>
               </li>
+              <li class="visible-xs">
+                    <a class="scroll" data-scrollto="lead" data-toggle="collapse" data-target=".navbar-collapse">Lead</a>
+                </li>
+                <li class="hidden-xs">
+                  <a class="scroll" data-scrollto="lead">Lead</a>
+              </li>
               {% endif %} {% if request.path == "/profile" %}
               <li>
                 <a class="scroll" data-scrollto="sent">Sent</a>
@@ -163,10 +189,10 @@
             {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li {% if request.path=="/comm" %} class="active" {%endif%}>
-                <a href="{{url_for('comm')}}" alt="Route Comm." title="Route Comm." data-text="Route Comm.">
-                    <i class="fa fa-comment fa-lg fa-fw"></i>
-                    <span class="visible-xs">Route Comm.</span>
+            <li {% if request.path=="/chopping_block" %} class="active" {%endif%}>
+                <a href="{{url_for('chopping_block')}}" alt="Chopping Block" title="Chopping Block" data-text="Chopping Block">
+                    <i class="fa fa-cut fa-lg fa-fw"></i>
+                    <span class="visible-xs">Chopping Block</span>
                 </a>
             </li>
             {% if session.logged_in %} {% if session.is_admin %}
@@ -252,12 +278,20 @@
 <script src="{{url_for('static',filename='cookie.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='jdpicker.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='jquery.tablesorter.min.js')}}"></script>
+<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/headroom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/headroomjs/0.5.0/jQuery.headroom.min.js"></script>
+    <script type="text/javascript">
+        $(".navbar-fixed-top").headroom();
+    </script> 
 <script type="text/javascript">
+
+
+
 function addClasses(){
     $('.unsend, .unattempt').children().addClass('fa-check-circle');
     $('.send, .attempt').children().addClass('fa-check-circle-o');
-    $('.vote').children().addClass('fa-thumbs-o-down');
-    $('.unvote').children().addClass('fa-thumbs-down');
+    $('.vote').children().addClass('fa-cut');
+    $('.unvote').children().addClass('fa-cut');
 }
 function bindClicks(){
 
@@ -296,16 +330,16 @@ function bindClicks(){
     });
     $('.vote').click(function(){
         var id = $(this).data('id');
-        $.ajax("/comm/vote/" + id + "/home");
+        $.ajax("/chopping_block/chop/" + id + "/home");
         $(this).removeClass('vote').addClass('unvote');
-        $(this).children().removeClass('fa-thumbs-o-down').addClass('fa-thumbs-down');
+        $(this).children().removeClass('red').addClass('green');
         bindClicks();
     });
     $('.unvote').click(function(){
         var id = $(this).data('id');
-        $.ajax("/comm/unvote/" + id + "/home");
+        $.ajax("/chopping_block/unchop/" + id + "/home");
         $(this).removeClass('unvote').addClass('vote');
-        $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-o-down');
+        $(this).children().removeClass('green').addClass('red');
         bindClicks();
     });
 }
