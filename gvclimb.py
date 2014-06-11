@@ -223,6 +223,7 @@ def delete(route_id,page):
 	require_logged_in()
 	require_admin()
 	g.db.execute("delete from routes where id = ?",[route_id])
+	g.db.commit()
 	return redirect(url_for(page))
 
 @app.route('/chopping_block/chop/<route_id>/<page>')
