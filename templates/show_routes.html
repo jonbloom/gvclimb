@@ -13,7 +13,8 @@
 				<th width="5%">Rating</th>
 				<th width="5%">Rope</th>
 				<th width="35%">Name</th>
-				<th width="10%">Date Set</th>
+				<th width="5%">Set</th>
+				<th width="5%">Expires</th>
 				<th width="20%">Setter</th>
 				<th width="15%">Tape</th>
 				{% if session.logged_in %}
@@ -28,6 +29,7 @@
 				<td>{{ route.rope }}</td>
 				<td>{{ route.name }}</td>
 				<td>{{ route.dateSet }}</td>
+				<td>{{ route.expiration }}</td>
 				<td>{{ route.setter }}</td>
 				<td>{{ route.tape_div|safe }}</td>
 				{% if session.logged_in %}
@@ -54,7 +56,9 @@
 			<div class="panel-body">
 				<p>{{ route.tape_div|safe }}</p>
 				<hr>
-				<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+				<p>Set: <span class="pull-right">{{route.dateSet }}</p>
+				<hr>
+				<p>Expires: <span class="pull-right">{{route.expiration }}</p>
 				<hr>
 				<p>Setter: <span class="pull-right">{{route.setter }}</p>
 			</div>
@@ -88,8 +92,11 @@
 				<div class="panel-body">
 					<p>{{ route.tape_div|safe }}</p>
 					<hr>
-					<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+					<p>Set: <span class="pull-right">{{route.dateSet }}</p>
 					<hr>
+					<p>Expires: <span class="pull-right">{{route.expiration }}</p>
+					<hr>
+
 					<p>Setter: <span class="pull-right">{{route.setter }}</p>
 
 				</div>
@@ -113,7 +120,8 @@
 				<th width="5%">Rating</th>
 				<th width="5%">Rope</th>
 				<th width="35%">Name</th>
-				<th width="10%">Date Set</th>
+				<th width="5%">Set</th>
+				<th width="5%">Expires</th>
 				<th width="20%">Setter</th>
 				<th width="15%">Tape</th>
 				{% if session.logged_in %}
@@ -128,6 +136,7 @@
 				<td>{{ route.rope }}</td>
 				<td>{{ route.name }}</td>
 				<td>{{ route.dateSet }}</td>
+				<td>{{ route.expiration }}</td>
 				<td>{{ route.setter }}</td>
 				<td>{{ route.tape_div|safe }}</td>
 				{% if session.logged_in %}
@@ -150,7 +159,8 @@
 				<th width="5%">Rating</th>
 				<th width="5%">Rope</th>
 				<th width="35%">Name</th>
-				<th width="10%">Date Set</th>
+				<th width="5%">Set</th>
+				<th width="5%">Expires</th>
 				<th width="20%">Setter</th>
 				<th width="15%">Tape</th>
 				{% if session.logged_in %}
@@ -165,6 +175,7 @@
 				<td>{{ route.rope }}</td>
 				<td>{{ route.name }}</td>
 				<td>{{ route.dateSet }}</td>
+				<td>{{ route.expires }}</td>
 				<td>{{ route.setter }}</td>
 				<td>{{ route.tape_div|safe }}</td>
 				{% if session.logged_in %}
@@ -191,7 +202,9 @@
 			<div class="panel-body">
 				<p>{{ route.tape_div|safe }}</p>
 				<hr>
-				<p>Date: <span class="pull-right">{{route.dateSet }}</p>
+				<p>Set: <span class="pull-right">{{route.dateSet }}</p>
+				<hr>
+				<p>Expires: <span class="pull-right">{{route.expiration }}</p>
 				<hr>
 				<p>Setter: <span class="pull-right">{{route.setter }}</p>
 			</div>

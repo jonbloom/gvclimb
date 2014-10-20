@@ -3,6 +3,7 @@ import hashlib
 from flask import Flask, request, session, g, redirect, url_for, \
 abort, render_template, flash, Response
 import json as j
+from datetime import datetime, timedelta
 
 # configuration
 DATABASE = '/var/www/gvclimb/gvclimb.sqlite'
@@ -47,6 +48,8 @@ def get_data():
 		voted = str(False)
 		status = 'Actions'
 		btn_class = ''
+		four_weeks = timedelta(weeks=4)
+		expiration = (datetime.strptime(str(row[5]),'%m/%d/%y') + four_weeks).strftime('%m/%d/%y')
 		if int(row[0]) in user_voted_ids:
 			voted = str(True)
 		if row[9] == "none":
@@ -57,31 +60,31 @@ def get_data():
 			btn_class = 'btn-success'
 			status = "Sent"
 			rtn['sent'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				rope=row[3], name=row[4], dateSet=row[5], expiration = expiration, setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status, voted=voted))
 		elif int(row[0]) in attempted_ids:
 			btn_class = 'btn-warning'
 			status = "Attempted"
 			rtn['attempted'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				rope=row[3], name=row[4], dateSet=row[5], expiration = expiration, setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),btn_class=btn_class, status=status, voted=voted))
 		else:
 			btn_class = 'btn-default'
 		if row[1] == "toprope":
 			rtn['tr'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				rope=row[3], name=row[4], dateSet=row[5], expiration = expiration, setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
 		elif row[1] == "lead":
 			rtn['lead'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				rope=row[3], name=row[4], dateSet=row[5], expiration = expiration, setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
 		else:
 			rtn['b'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				rope=row[3], name=row[4], dateSet=row[5], expiration = expiration, setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted))
 		if int(row[0] in comm_routes.keys()):
 			rtn['comm'].append(dict(id=row[0], route_type=row[1], rating=row[2], 
-				rope=row[3], name=row[4], dateSet=row[5], setter=row[6],
+				rope=row[3], name=row[4], dateSet=row[5], expiration = expiration, setter=row[6],
 				tape_div=gen_tape_div(base,row[7],row[8]),sort=row[12],btn_class=btn_class, status=status, voted=voted, num_votes=comm_routes[row[0]]))
 	return rtn
 		
