@@ -30,7 +30,7 @@ def teardown_request(exception):
 
 def get_data():
 	rtn = {'tr': [], 'b': [], 'lead': [], 'sent': [], 'attempted': [], 'comm': [], 'counts': {}}
-	all_routes = g.db.execute('select r.*, k.key from routes as r join orderkeys as k on k.rating = r.rating order by k.key')
+	all_routes = g.db.execute('select r.*, k.key from routes as r left join orderkeys as k on k.rating = r.rating order by k.key')
 	comm_routes = dict(g.db.execute("select route_id, count(route_id) from votes group by route_id").fetchall())
 	default_colors = g.db.execute('select * from colors').fetchone()
 	rtn['counts'] = dict(g.db.execute("SELECT orderkeys.rating, COUNT(routes.id) FROM orderkeys LEFT JOIN routes USING (rating) GROUP BY orderkeys.rating ORDER BY orderkeys.key"))
