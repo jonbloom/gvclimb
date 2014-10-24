@@ -274,7 +274,7 @@ def update_colors():
 		'10a' = ?, '10b' = ?, '10c' = ?, '10d' = ?, 
 		'11a' = ?, '11b' = ?, '11c' = ?, '11d' = ?, 
 		'12a' = ?, '12b' = ?, '12c' = ?, '12d' = ?, 
-		'V0' = ?, 'V1' = ?, 'V2' = ?, 'V3' = ?, 'V4' = ?, 'V5' = ?, 'V6' = ?, 'V7' = ?, 'V8' = ?;""",
+		'V0' = ?, 'V1' = ?, 'V2' = ?, 'V3' = ?, 'V4' = ?, 'V5' = ?, 'V6' = ?, 'V7' = ?, 'V8' = ?, 'V9' = ?;""",
 		[c_V0,c_V1,c_V2,
 		c_V3, c_V3,
 		c_V4, c_V4,
@@ -282,7 +282,7 @@ def update_colors():
 		c_V6, c_V6,
 		c_V7, c_V7,
 		c_V8, c_V8,
-		c_V0, c_V1, c_V2, c_V3, c_V4, c_V5, c_V6, c_V7, c_V8])
+		c_V0, c_V1, c_V2, c_V3, c_V4, c_V5, c_V6, c_V7, c_V8, c_V8])
 	g.db.commit()
 	return redirect(url_for('admin'))
 
