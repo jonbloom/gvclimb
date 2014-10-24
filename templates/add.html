@@ -14,7 +14,7 @@
 	<div class="col-md-4">
 		<div class="form-group">
 			<label for="route_type">Route Type</label>
-			<select name="route_type" class="form-control"onchange="ratings(this.value)" id="route_type">
+			<select name="route_type" required class="form-control"onchange="ratings(this.value)" id="route_type">
 				<option selected="selected" disabled="disabled" >Select A Route Type</option>
 				<option value="toprope">Top Rope</option>
 				<option value="boulder">Boulder</option>
@@ -23,13 +23,13 @@
 		</div>
 		<div class="form-group">
 			<label for="rating">Rating</label>
-			<select name="rating" class="form-control" onchange="tapePreview()" id="rating">
+			<select name="rating" class="form-control" required onchange="tapePreview()" id="rating">
 				<option selected="selected" disabled="disabled">Select A Route Type</option>
 			</select>
 		</div>
 		<div class="form-group">
 			<label for="rope">Rope</label>
-			<select name="rope" class="form-control" onchange="" id="rope">
+			<select name="rope" class="form-control" onchange="" required id="rope">
 				<option selected="selected" disabled="disabled">Select A Rope</option>
 				<option value=1>1</option>
 				<option value=2>2</option>
@@ -53,11 +53,11 @@
 		
 		<div class="form-group">
 			<label for="date">Date Set</label>
-			<input name="date" type="text" class="form-control" id="date" placeholder="">
+			<input name="date" type="text" class="form-control" id="date" placeholder="" required>
 		</div>
 		<div class="form-group">
 			<label for="setter">Route Setter</label>
-			<select name="setter" class="form-control" id="setter" multiple="multiple" size="5" data-original-title="Hold down Ctrl/&#8984; to select multiple setters.">
+			<select name="setter" class="form-control" id="setter" multiple="multiple" size="5" required data-original-title="Hold down Ctrl/&#8984; to select multiple setters.">
 				<option selected="selected" disabled="disabled" value="Unknown">Select A Setter</option>
 				{% for s in setters %}
 				{{setter(s.name)}}
